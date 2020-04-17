@@ -7,8 +7,19 @@ import "./Home.css";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
+import * as uuid from "uuid";
 
 export default function Home() {
+
+  let storedUserId;
+
+  if (localStorage.getItem('userId')) {
+    storedUserId = localStorage.getItem('userId');
+  } else {
+    storedUserId = uuid.v1();
+    localStorage.setItem('userId', storedUserId);
+  }
+
   const [notes, setNotes] = useState([]);
   // const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +45,14 @@ export default function Home() {
   }, []);
 
   function loadNotes() {
-    return API.get("privatebin", "/privatebin");
+    let myInit = {
+      body: {},
+      headers: {
+        "UserId": storedUserId,
+      }
+    }
+
+      return API.get("privatebin", "/privatebin", myInit);
   }
 
 

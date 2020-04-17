@@ -13,14 +13,23 @@ import * as uuid from "uuid";
 function App() {
   const history = useHistory();
 
-  const [userId, setUserId] = useState('');
+  let storedUserId;
+
+  if (localStorage.getItem('userId')) {
+    storedUserId = localStorage.getItem('userId');
+  } else {
+    storedUserId = uuid.v1();
+    localStorage.setItem('userId', storedUserId);
+  }
+
+  const [userId, setUserId] = useState(storedUserId);
 
   useEffect(() => {
     onLoad();
   }, []);
 
   async function onLoad() {
-    setUserId(uuid.v4());
+  //   setUserId(uuid.v4());
   }
 
   return (
@@ -34,6 +43,9 @@ function App() {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
+            <LinkContainer to="/notes/new">
+              <NavItem>Dodaj...</NavItem>
+            </LinkContainer>
             <LinkContainer to="/about">
               <NavItem>About</NavItem>
             </LinkContainer>

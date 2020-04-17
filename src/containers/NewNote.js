@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, MenuItem} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import PasswordMask from 'react-password-mask';
 import { onError } from "../libs/errorLib";
@@ -9,10 +9,29 @@ import "./NewNote.css";
 import { API } from "aws-amplify";
 import { encrypt } from "../Aes-256";
 import {standarizePassword} from "../libs/password-lib";
+import Select from 'react-select';
+import {ttlOptions} from "../data/ttl";
+import * as uuid from "uuid";
+
+const ttlIndex = 4;
 
 export default function NewNote() {
   const file = useRef(null);
   const history = useHistory();
+
+  let storedUserId;
+
+  if (localStorage.getItem('userId')) {
+    storedUserId = localStorage.getItem('userId');
+  } else {
+    storedUserId = uuid.v1();
+    localStorage.setItem('userId', storedUserId);
+  }
+
+  const [userId, setUserId] = useState(storedUserId);
+
+  const [telomer, setTelomer] = useState(3);
+  const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
   const [content, setContent] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +61,13 @@ export default function NewNote() {
     try {
       const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
 
-      await createNote({ type: 'text', ttl: 15, telomer: 5, content: ciphertext, iv, tag });
+      await createNote({
+        userId: storedUserId,
+        type: 'text',
+        ttl: parseInt(ttl),
+        telomer: parseInt(telomer),
+        content: ciphertext, iv, tag }
+        );
       history.push("/");
     } catch (e) {
       onError(e);
@@ -56,9 +81,40 @@ export default function NewNote() {
     });
   }
 
+  // const CustomOption = ({ innerProps, isDisabled }) =>
+  //   innerProps.options = ttlOptions
+  //   !isDisabled ? (
+  //     <div {...innerProps}>{/* your component internals */}</div>
+  //   ) : null;
+
   return (
     <div className="NewNote">
       <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <ControlLabel>Ilość wyświetleń</ControlLabel>
+          <FormControl controlId="telomer"
+                       type="number"
+                       value={telomer}
+                       onChange={e => setTelomer(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Data ważności (w minutach)</ControlLabel>
+          <FormControl controlId="ttl"
+                       type="number"
+                       value={ttl}
+                       onChange={e => setTtl(e.target.value)}
+          />
+        </FormGroup>
+
+        <FormGroup controlId="ttl">
+          <ControlLabel>Data ważności</ControlLabel>
+          <Select
+            options={ttlOptions}
+            defaultValue={ttlOptions[ttlIndex]}
+            onChange={e => setTtl(e.value)}
+             />
+        </FormGroup>
         <FormGroup controlId="password">
           <ControlLabel>Hasło</ControlLabel>
           <PasswordMask controlId="password"

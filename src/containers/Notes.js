@@ -11,11 +11,24 @@ import { decrypt } from "../Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import QRCode from "qrcode.react";
 import {LinkContainer} from "react-router-bootstrap";
+import * as uuid from "uuid";
 
 export default function Notes() {
   const file = useRef(null);
   const { id } = useParams();
   const history = useHistory();
+
+  let storedUserId;
+
+  if (localStorage.getItem('userId')) {
+    storedUserId = localStorage.getItem('userId');
+  } else {
+    storedUserId = uuid.v1();
+    localStorage.setItem('userId', storedUserId);
+  }
+
+  const [userId, setUserId] = useState(storedUserId);
+
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState("");
   const [content, setContent] = useState("");
@@ -175,25 +188,25 @@ export default function Notes() {
               onChange={e => setContent(e.target.value)}
             />
           </FormGroup>
-          <LoaderButton
-            block
-            type="submit"
-            bsSize="large"
-            bsStyle="primary"
-            isLoading={isLoading}
-            disabled={!validateForm()}
-          >
-            Save
-          </LoaderButton>
-          <LoaderButton
-            block
-            bsSize="large"
-            bsStyle="danger"
-            onClick={handleDelete}
-            isLoading={isDeleting}
-          >
-            Delete
-          </LoaderButton>
+          {/*<LoaderButton*/}
+          {/*  block*/}
+          {/*  type="submit"*/}
+          {/*  bsSize="large"*/}
+          {/*  bsStyle="primary"*/}
+          {/*  isLoading={isLoading}*/}
+          {/*  disabled={!validateForm()}*/}
+          {/*>*/}
+          {/*  Save*/}
+          {/*</LoaderButton>*/}
+          {/*<LoaderButton*/}
+          {/*  block*/}
+          {/*  bsSize="large"*/}
+          {/*  bsStyle="danger"*/}
+          {/*  onClick={handleDelete}*/}
+          {/*  isLoading={isDeleting}*/}
+          {/*>*/}
+          {/*  Delete*/}
+          {/*</LoaderButton>*/}
         </form>
       )}
     </div>
