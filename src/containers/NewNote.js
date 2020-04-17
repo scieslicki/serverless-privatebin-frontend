@@ -16,7 +16,7 @@ import { readUserId } from "../libs/readUserId";
 const ttlIndex = 4;
 
 export default function NewNote() {
-  const file = useRef(null);
+  // const file = useRef(null);
   const history = useHistory();
 
   let storedUserId = readUserId();
@@ -33,21 +33,21 @@ export default function NewNote() {
     return content.length > 0;
   }
 
-  function handleFileChange(event) {
-    file.current = event.target.files[0];
-  }
+  // function handleFileChange(event) {
+  //   file.current = event.target.files[0];
+  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-      alert(
-        `Please pick a file smaller than ${
-          config.MAX_ATTACHMENT_SIZE / 1000000
-        } MB.`
-      );
-      return;
-    }
+    // if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
+    //   alert(
+    //     `Please pick a file smaller than ${
+    //       config.MAX_ATTACHMENT_SIZE / 1000000
+    //     } MB.`
+    //   );
+    //   return;
+    // }
 
     setIsLoading(true);
 
@@ -59,8 +59,11 @@ export default function NewNote() {
         type: 'text',
         ttl: parseInt(ttl),
         telomer: parseInt(telomer),
-        content: ciphertext, iv, tag }
-        );
+        content: ciphertext,
+        iv,
+        tag
+      }
+      );
       history.push("/");
     } catch (e) {
       onError(e);

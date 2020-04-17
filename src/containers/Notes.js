@@ -7,7 +7,7 @@ import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Notes.css";
 import { s3Upload } from "../libs/awsLib";
-import { decrypt } from "../Aes-256";
+import {decrypt, encrypt} from "../Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
@@ -15,7 +15,7 @@ import { readUserId } from "../libs/readUserId";
 import WrongPasswordModal from "../components/WrongPasswordModal";
 
 export default function Notes() {
-  const file = useRef(null);
+  // const file = useRef(null);
   const { id } = useParams();
   const history = useHistory();
 
@@ -39,11 +39,12 @@ export default function Notes() {
     async function onLoad() {
       try {
         const note = await loadNote();
-        const { content, attachment } = note;
+        // const { content, attachment } = note;
+        const { content } = note;
 
-        if (attachment) {
-          note.attachmentURL = await Storage.vault.get(attachment);
-        }
+        // if (attachment) {
+        //   note.attachmentURL = await Storage.vault.get(attachment);
+        // }
 
         // setContent(content);
         setContent('');
@@ -60,13 +61,13 @@ export default function Notes() {
     return content.length > 0;
   }
 
-  function formatFilename(str) {
-    return str.replace(/^\w+-/, "");
-  }
+  // function formatFilename(str) {
+  //   return str.replace(/^\w+-/, "");
+  // }
 
-  function handleFileChange(event) {
-    file.current = event.target.files[0];
-  }
+  // function handleFileChange(event) {
+  //   file.current = event.target.files[0];
+  // }
 
   function saveNote(note) {
     return API.put("privatebin", `/privatebin/${id}`, {
@@ -75,30 +76,31 @@ export default function Notes() {
   }
 
   async function handleSubmit(event) {
-    let attachment;
+    // let attachment;
 
     event.preventDefault();
 
-    if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-      alert(
-        `Please pick a file smaller than ${
-          config.MAX_ATTACHMENT_SIZE / 1000000
-        } MB.`
-      );
-      return;
-    }
+    // if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
+    //   alert(
+    //     `Please pick a file smaller than ${
+    //       config.MAX_ATTACHMENT_SIZE / 1000000
+    //     } MB.`
+    //   );
+    //   return;
+    // }
 
     setIsLoading(true);
 
     try {
-      if (file.current) {
-        attachment = await s3Upload(file.current);
-      }
+      // if (file.current) {
+      //   attachment = await s3Upload(file.current);
+      // }
+      const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
+      note.content = ciphertext;
+      note.iv = iv;
+      note.tag = tag;
 
-      await saveNote({
-        content,
-        attachment: attachment || note.attachment
-      });
+      await saveNote(note);
       history.push("/");
     } catch (e) {
       onError(e);
@@ -150,8 +152,7 @@ export default function Notes() {
   return (
     <div className="Notes">
       {note && (
-        // <form onSubmit={handleSubmit} onKeyPress={handleDecrypt}>
-        <form onSubmit={handleDecrypt}>
+        <form onSubmit={handleSubmit}>
           <FormGroup>
             <ListGroupItem header={note.noteId}>
               <InfoBox note={note} />
@@ -185,25 +186,30 @@ export default function Notes() {
           <div>
             <UrlInfo note={note} />
           </div>
-          {/*<LoaderButton*/}
-          {/*  block*/}
-          {/*  type="submit"*/}
-          {/*  bsSize="large"*/}
-          {/*  bsStyle="primary"*/}
-          {/*  isLoading={isLoading}*/}
-          {/*  disabled={!validateForm()}*/}
-          {/*>*/}
-          {/*  Save*/}
-          {/*</LoaderButton>*/}
-          {/*<LoaderButton*/}
-          {/*  block*/}
-          {/*  bsSize="large"*/}
-          {/*  bsStyle="danger"*/}
-          {/*  onClick={handleDelete}*/}
-          {/*  isLoading={isDeleting}*/}
-          {/*>*/}
-          {/*  Delete*/}
-          {/*</LoaderButton>*/}
+          { storedUserId == note.userId ?
+            (
+              <div>
+                <LoaderButton
+                  block
+                  type="submit"
+                  bsSize="large"
+                  bsStyle="primary"
+                  isLoading={isLoading}
+                  disabled={!validateForm()}
+                >
+                  Save
+                </LoaderButton>
+                <LoaderButton
+                  block
+                  bsSize="large"
+                  bsStyle="danger"
+                  onClick={handleDelete}
+                  isLoading={isDeleting}
+                >
+                  Delete
+                </LoaderButton>
+              </div> )
+           : <div></div>}
         </form>
       )}
       <WrongPasswordModal show={show} handleClose={handleClose} />
