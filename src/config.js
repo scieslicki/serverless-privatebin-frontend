@@ -3,7 +3,7 @@ const dev = {
   apiGateway: {
     REGION: "eu-central-1",
     // URL: "https://8pqtao81vd.execute-api.eu-central-1.amazonaws.com/dev"
-    URL: "https://dev.api.dobrastronka.pl/api/privatebin"
+    URL: "https://dev.api.dobrastronka.pl/api"
   },
 };
 
@@ -12,7 +12,7 @@ const prod = {
   apiGateway: {
     REGION: "eu-central-1",
     // URL: "https://8pqtao81vd.execute-api.eu-central-1.amazonaws.com/dev"
-    URL: "https://dev.api.dobrastronka.pl/api/privatebin"
+    URL: "https://dev.api.dobrastronka.pl/api"
   },
 };
 
