@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import QRCode from 'qrcode.react';
-import {PageHeader, ListGroup, ListGroupItem, FormControl, FormGroup} from "react-bootstrap";
+import {PageHeader, ListGroup, ListGroupItem, FormControl, Modal, Button } from "react-bootstrap";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
@@ -8,6 +8,7 @@ import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import * as uuid from "uuid";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 export default function Home() {
 
@@ -23,6 +24,11 @@ export default function Home() {
   const [notes, setNotes] = useState([]);
   // const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
   useEffect(() => {
     async function onLoad() {
@@ -59,24 +65,48 @@ export default function Home() {
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
+        <div>
           <LinkContainer key={note.noteId} to={`/${note.noteId}`}>
             <ListGroupItem header={note.noteId}>
-              <div>
-                {"Ważny do: " + new Date(note.timeToLive * 1000).toLocaleString()}<br/>
-                {"Zostało wyświetleń: " + note.telomer}<br/>
-                {"Typ: " + note.type}<br/>
-                {"Utworzono: " + new Date(note.createdAt * 1000).toLocaleString()}<br/>
+              <div class='first-row'>
+                <div>
+                  Pozostało wyświetleń: <strong>{ note.telomer}</strong>
+                </div>
+                <div>
+                  Ważny do: <strong>{ new Date(note.timeToLive * 1000).toLocaleString()}</strong>
+                </div>
               </div>
-              <div>
-                <QRCode value={`${window.location.href}${note.noteId}`} />
+              <div class='second-row'>
+                <div>
+                  Typ: { note.type }
+                </div>
+                <div>
+                  Utworzono: { new Date(note.createdAt * 1000).toLocaleString() }
+                </div>
               </div>
             </ListGroupItem>
-        </LinkContainer>
-      ) : (
+          </LinkContainer>
+
+          <div class="info">
+            <div class="qr-code">
+              <QRCode value={`${window.location.href}${note.noteId}`} />
+            </div>
+
+            <div class='url-link'>
+              <FormControl type="text" value={`${window.location.href}${note.noteId}`} readonly/>
+              <CopyToClipboard text={`${window.location.href}${note.noteId}`}>
+                <button>Kopiuj url...</button>
+              </CopyToClipboard>
+            </div>
+          </div>
+
+        </div>
+
+    ) : (
         <LinkContainer key="new" to="/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Create a new note
+              <b>{"\uFF0B"}</b> Dodaj nową notkę...
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -104,11 +134,51 @@ export default function Home() {
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Your Notes</PageHeader>
+        <PageHeader>Twoje szyfrowane notki:</PageHeader>
+        { renderModal() }
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
       </div>
+    );
+  }
+
+  function renderModal() {
+    const handleRemoving = () => {
+
+      storedUserId = uuid.v1();
+      localStorage.setItem('userId', storedUserId);
+
+      setNotes([]);
+
+      handleClose();
+    };
+
+    return (
+      <>
+      <Button variant="primary" onClick={handleShow}>
+        Wyczyść historię...
+      </Button>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Usunąć historię?</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>Usunięcie historii notek, spowoduje wyczyszczenie listy.</p>
+            <p>Dostęp do notek, jeśli będą jeszcze ważne, będzie możliwy tylko przez ich indywidualny adres url</p>
+            <p><strong>Nie będą już więcej wyświetlane na tej liście.</strong></p>
+            <p><strong>Uwaga:</strong> Nie będzie można cofnąć tej akcji!</p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>Zamknij</Button>
+            <Button variant="primary" onClick={handleRemoving}>Usuń</Button>
+          </Modal.Footer>
+
+        </Modal>
+      </>
     );
   }
 

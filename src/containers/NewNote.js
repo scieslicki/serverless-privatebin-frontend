@@ -91,13 +91,22 @@ export default function NewNote() {
     <div className="NewNote">
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <ControlLabel>Ilość wyświetleń</ControlLabel>
+          <ControlLabel>Maksymalna ilość wyświetleń</ControlLabel>
           <FormControl controlId="telomer"
                        type="number"
                        value={telomer}
                        onChange={e => setTelomer(e.target.value)}
           />
         </FormGroup>
+        <FormGroup controlId="ttl">
+          <ControlLabel>Data ważności</ControlLabel>
+          <Select
+            options={ttlOptions}
+            defaultValue={ttlOptions[ttlIndex]}
+            onChange={e => setTtl(e.value)}
+             />
+        </FormGroup>
+
         <FormGroup>
           <ControlLabel>Data ważności (w minutach)</ControlLabel>
           <FormControl controlId="ttl"
@@ -107,14 +116,6 @@ export default function NewNote() {
           />
         </FormGroup>
 
-        <FormGroup controlId="ttl">
-          <ControlLabel>Data ważności</ControlLabel>
-          <Select
-            options={ttlOptions}
-            defaultValue={ttlOptions[ttlIndex]}
-            onChange={e => setTtl(e.value)}
-             />
-        </FormGroup>
         <FormGroup controlId="password">
           <ControlLabel>Hasło</ControlLabel>
           <PasswordMask controlId="password"

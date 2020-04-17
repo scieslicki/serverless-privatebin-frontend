@@ -122,8 +122,6 @@ export default function Notes() {
     } catch {
       alert('Wrong password');
     }
-
-    // setContent(decrypt(note.content, note.iv, note.tag, password));
   }
 
   function deleteNote() {
@@ -178,7 +176,7 @@ export default function Notes() {
               bsStyle="warning"
               onClick={handleDecrypt}
             >
-              Show message
+              Pokaż
             </LoaderButton>
           </FormGroup>
           <FormGroup controlId="content">

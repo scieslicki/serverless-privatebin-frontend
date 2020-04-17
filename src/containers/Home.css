@@ -30,3 +30,26 @@
 .Home .lander div a:first-child {
     margin-right: 20px;
 }
+
+.Home .info {
+    display: flex;
+
+    border-bottom: 2px solid rgba(192, 192, 192, 0.32);
+    margin-bottom: 15px;
+}
+
+.Home .info .qr-code {
+    padding: 10px 5px 10px 10px;
+}
+
+.Home .info .url-link {
+    padding: 10px 10px 10px 5px;
+    width: 100%;
+}
+
+.list-group-item-text .first-row, .list-group-item-text .second-row {
+    display: flex;
+}
+.list-group-item-text .first-row div, .list-group-item-text .second-row div {
+    width: 50%;
+}
