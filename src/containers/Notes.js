@@ -7,7 +7,7 @@ import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Notes.css";
 import { s3Upload } from "../libs/awsLib";
-import {decrypt, encrypt} from "../Aes-256";
+import {decrypt, encrypt} from "../libs/Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
@@ -184,7 +184,7 @@ export default function Notes() {
             />
           </FormGroup>
           <div>
-            <UrlInfo note={note} />
+            <UrlInfo note={note} url={window.location.href}/>
           </div>
           { storedUserId == note.userId ?
             (

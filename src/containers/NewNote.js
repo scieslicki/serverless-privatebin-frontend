@@ -7,7 +7,7 @@ import { onError } from "../libs/errorLib";
 import config from "../config";
 import "./NewNote.css";
 import { API } from "aws-amplify";
-import { encrypt } from "../Aes-256";
+import { encrypt } from "../libs/Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import Select from 'react-select';
 import {ttlOptions} from "../data/ttl";

@@ -8,19 +8,12 @@ import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./components/ErrorBoundary";
-import * as uuid from "uuid";
+import {readUserId} from "./libs/readUserId";
 
 function App() {
   const history = useHistory();
 
-  let storedUserId;
-
-  if (localStorage.getItem('userId')) {
-    storedUserId = localStorage.getItem('userId');
-  } else {
-    storedUserId = uuid.v1();
-    localStorage.setItem('userId', storedUserId);
-  }
+  let storedUserId = readUserId();
 
   const [userId, setUserId] = useState(storedUserId);
 

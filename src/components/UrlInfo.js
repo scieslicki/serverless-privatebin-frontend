@@ -4,17 +4,20 @@ import {FormControl} from "react-bootstrap";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import "./UrlInfo.css";
 
-export default function UrlInfo({note}) {
+export default function UrlInfo({note, url = null}) {
+  if (!url) {
+    url = window.location.href + note.noteId;
+  }
   return (
   <>
     <div className="info">
       <div className="qr-code">
-        <QRCode value={`${window.location.href}${note.noteId}`}/>
+        <QRCode value={url}/>
       </div>
 
       <div className='url-link'>
-        <FormControl type="text" value={`${window.location.href}${note.noteId}`} readOnly/>
-        <CopyToClipboard text={`${window.location.href}${note.noteId}`}>
+        <FormControl type="text" value={url} readOnly/>
+        <CopyToClipboard text={url}>
           <button>Kopiuj url...</button>
         </CopyToClipboard>
       </div>
