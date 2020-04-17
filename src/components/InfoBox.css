@@ -1,0 +1,6 @@
+.list-group-item-text .first-row, .list-group-item-text .second-row, .list-group-item-text .third-row {
+    display: flex;
+}
+.list-group-item-text .first-row span, .list-group-item-text .second-row span, .list-group-item-text .third-row span {
+    width: 50%;
+}

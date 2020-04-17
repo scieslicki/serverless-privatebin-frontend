@@ -1,0 +1,15 @@
+.info {
+    display: flex;
+
+    border-bottom: 2px solid rgba(192, 192, 192, 0.32);
+    margin-bottom: 15px;
+}
+
+.info .qr-code {
+    padding: 10px 5px 10px 10px;
+}
+
+.info .url-link {
+    padding: 10px 10px 10px 5px;
+    width: 100%;
+}

@@ -11,7 +11,7 @@ import { encrypt } from "../Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import Select from 'react-select';
 import {ttlOptions} from "../data/ttl";
-import * as uuid from "uuid";
+import { readUserId } from "../libs/readUserId";
 
 const ttlIndex = 4;
 
@@ -19,14 +19,7 @@ export default function NewNote() {
   const file = useRef(null);
   const history = useHistory();
 
-  let storedUserId;
-
-  if (localStorage.getItem('userId')) {
-    storedUserId = localStorage.getItem('userId');
-  } else {
-    storedUserId = uuid.v1();
-    localStorage.setItem('userId', storedUserId);
-  }
+  let storedUserId = readUserId();
 
   const [userId, setUserId] = useState(storedUserId);
 

@@ -9,23 +9,17 @@ import "./Notes.css";
 import { s3Upload } from "../libs/awsLib";
 import { decrypt } from "../Aes-256";
 import {standarizePassword} from "../libs/password-lib";
-import QRCode from "qrcode.react";
-import {LinkContainer} from "react-router-bootstrap";
-import * as uuid from "uuid";
+import InfoBox from "../components/InfoBox";
+import UrlInfo from "../components/UrlInfo";
+import { readUserId } from "../libs/readUserId";
+import WrongPasswordModal from "../components/WrongPasswordModal";
 
 export default function Notes() {
   const file = useRef(null);
   const { id } = useParams();
   const history = useHistory();
 
-  let storedUserId;
-
-  if (localStorage.getItem('userId')) {
-    storedUserId = localStorage.getItem('userId');
-  } else {
-    storedUserId = uuid.v1();
-    localStorage.setItem('userId', storedUserId);
-  }
+  let storedUserId = readUserId();
 
   const [userId, setUserId] = useState(storedUserId);
 
@@ -34,6 +28,8 @@ export default function Notes() {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   useEffect(() => {
     function loadNote() {
@@ -120,7 +116,8 @@ export default function Notes() {
 
       setContent(content);
     } catch {
-      alert('Wrong password');
+      setShow(true);
+      // alert('Wrong password');
     }
   }
 
@@ -153,21 +150,19 @@ export default function Notes() {
   return (
     <div className="Notes">
       {note && (
-        <form onSubmit={handleSubmit}>
+        // <form onSubmit={handleSubmit} onKeyPress={handleDecrypt}>
+        <form onSubmit={handleDecrypt}>
           <FormGroup>
             <ListGroupItem header={note.noteId}>
-              <div>
-                {"Ważny do: " + new Date(note.timeToLive * 1000).toLocaleString()}<br/>
-                {"Zostało wyświetleń: " + note.telomer}<br/>
-                {"Typ: " + note.type}<br/>
-              </div>
+              <InfoBox note={note} />
             </ListGroupItem>
 
           </FormGroup>
           <FormGroup controlId="password">
             <ControlLabel>Hasło</ControlLabel>
             <FormControl type="text"
-             onChange={e => setPassword(e.target.value)} />
+             onChange={e => setPassword(e.target.value)}
+            />
           </FormGroup>
           <FormGroup>
             <LoaderButton
@@ -181,11 +176,15 @@ export default function Notes() {
           </FormGroup>
           <FormGroup controlId="content">
             <FormControl
+              placeholder="Podaj hasło aby zobaczyć wiadomość po odszyfrowaniu..."
               value={content}
               componentClass="textarea"
               onChange={e => setContent(e.target.value)}
             />
           </FormGroup>
+          <div>
+            <UrlInfo note={note} />
+          </div>
           {/*<LoaderButton*/}
           {/*  block*/}
           {/*  type="submit"*/}
@@ -207,6 +206,9 @@ export default function Notes() {
           {/*</LoaderButton>*/}
         </form>
       )}
+      <WrongPasswordModal show={show} handleClose={handleClose} />
+
     </div>
+
   );
 }
