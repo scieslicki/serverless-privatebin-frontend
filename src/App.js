@@ -43,7 +43,7 @@ function App() {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <LinkContainer to="/notes/new">
+            <LinkContainer to="/new">
               <NavItem>Dodaj...</NavItem>
             </LinkContainer>
             <LinkContainer to="/about">

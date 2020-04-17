@@ -11,10 +11,10 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route exact path="/notes/new">
+      <Route exact path="/new">
         <NewNote />
       </Route>
-      <Route exact path="/notes/:id">
+      <Route exact path="/:id">
         <Notes />
       </Route>
 

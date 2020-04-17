@@ -59,7 +59,7 @@ export default function Home() {
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
-          <LinkContainer key={note.noteId} to={`/notes/${note.noteId}`}>
+          <LinkContainer key={note.noteId} to={`/${note.noteId}`}>
             <ListGroupItem header={note.noteId}>
               <div>
                 {"Ważny do: " + new Date(note.timeToLive * 1000).toLocaleString()}<br/>
@@ -68,12 +68,12 @@ export default function Home() {
                 {"Utworzono: " + new Date(note.createdAt * 1000).toLocaleString()}<br/>
               </div>
               <div>
-                <QRCode value={`${window.location.href}notes/${note.noteId}`} />
+                <QRCode value={`${window.location.href}${note.noteId}`} />
               </div>
             </ListGroupItem>
         </LinkContainer>
       ) : (
-        <LinkContainer key="new" to="/notes/new">
+        <LinkContainer key="new" to="/new">
           <ListGroupItem>
             <h4>
               <b>{"\uFF0B"}</b> Create a new note
