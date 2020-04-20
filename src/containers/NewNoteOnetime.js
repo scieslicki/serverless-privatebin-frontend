@@ -12,10 +12,11 @@ import {standarizePassword} from "../libs/password-lib";
 import Select from 'react-select';
 import {ttlOptions} from "../data/ttl";
 import { readUserId } from "../libs/readUserId";
+import NewNote from "./NewNote";
 
 const ttlIndex = 4;
 
-export default function NewNote(initial = 3, addPasswordToUrl = false) {
+export default function NewNoteOnetime() {
   // const file = useRef(null);
   const history = useHistory();
 
@@ -23,15 +24,13 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
 
   const [userId, setUserId] = useState(storedUserId);
 
-  if (!Number.isInteger(initial)) {
-    initial = 3;
-  }
-
-  const [telomer, setTelomer] = useState(initial);
+  const [telomer, setTelomer] = useState(1);
   const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
   const [content, setContent] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  return NewNote(1, true);
 
   function validateForm() {
     return content.length > 0;
@@ -58,12 +57,6 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
     try {
       const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
 
-      let autopass = false;
-
-      if (typeof addPasswordToUrl === "boolean" && addPasswordToUrl){
-        autopass = addPasswordToUrl;
-      }
-      
       await createNote({
         userId: storedUserId,
         type: 'text',
@@ -71,8 +64,7 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
         telomer: parseInt(telomer),
         content: ciphertext,
         iv,
-        tag,
-        autopass
+        tag
       }
       );
       history.push("/");

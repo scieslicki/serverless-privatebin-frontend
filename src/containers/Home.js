@@ -71,6 +71,7 @@ export default function Home() {
         </div>
 
     ) : (
+      <div>
         <LinkContainer key="new" to="/new">
           <ListGroupItem>
             <h4>
@@ -78,6 +79,14 @@ export default function Home() {
             </h4>
           </ListGroupItem>
         </LinkContainer>
+        <LinkContainer key="new_onetime" to="/new-onetime">
+          <ListGroupItem>
+            <h4>
+              <b>{"\uFF0B"}</b> Dodaj nową jednorazową notkę...
+            </h4>
+          </ListGroupItem>
+        </LinkContainer>
+      </div>
       )
     );
   }

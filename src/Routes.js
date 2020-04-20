@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import NewNote from "./containers/NewNote";
+import NewNoteOnetime from "./containers/NewNoteOnetime";
 import Notes from "./containers/Notes";
 
 export default function Routes() {
@@ -13,6 +14,12 @@ export default function Routes() {
       </Route>
       <Route exact path="/new">
         <NewNote />
+      </Route>
+      <Route exact path="/new-onetime">
+        <NewNoteOnetime />
+      </Route>
+      <Route exact path="/:id/:pass">
+        <Notes />
       </Route>
       <Route exact path="/:id">
         <Notes />

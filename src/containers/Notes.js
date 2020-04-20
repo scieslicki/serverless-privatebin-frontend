@@ -16,7 +16,7 @@ import WrongPasswordModal from "../components/WrongPasswordModal";
 
 export default function Notes() {
   // const file = useRef(null);
-  const { id } = useParams();
+  const { id, pass } = useParams();
   const history = useHistory();
 
   let storedUserId = readUserId();
@@ -24,11 +24,12 @@ export default function Notes() {
   const [userId, setUserId] = useState(storedUserId);
 
   const [note, setNote] = useState(null);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(pass);
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [show, setShow] = useState(false);
+  const [passwordDisabled, setPasswordDisabled] = useState(false);
   const handleClose = () => setShow(false);
 
   useEffect(() => {
@@ -117,6 +118,9 @@ export default function Notes() {
       content = decrypt(note.content, note.iv, note.tag, standarizePassword(password));
 
       setContent(content);
+
+      setPasswordDisabled(true);
+      
     } catch {
       setShow(true);
       // alert('Wrong password');
@@ -162,7 +166,9 @@ export default function Notes() {
           <FormGroup controlId="password">
             <ControlLabel>Hasło</ControlLabel>
             <FormControl type="text"
-             onChange={e => setPassword(e.target.value)}
+                         readOnly={passwordDisabled}
+                         value={password}
+                         onChange={e => setPassword(e.target.value)}
             />
           </FormGroup>
           <FormGroup>

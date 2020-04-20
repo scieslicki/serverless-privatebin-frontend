@@ -5,3 +5,10 @@
 .App .navbar-brand {
   font-weight: bold;
 }
+
+.App .logo {
+  height: 50px;
+  display: inline;
+  margin-top: -15px;
+  margin-left: -15px;
+}

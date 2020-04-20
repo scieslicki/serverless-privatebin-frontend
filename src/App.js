@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import {Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import './App.css';
 import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
@@ -29,8 +29,13 @@ function App() {
     <div className="App container">
       <Navbar fluid collapseOnSelect>
         <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/">Serverless Privatebin</Link>
+          <Navbar.Brand href="/">
+            <Link to="/">
+              <img
+                src="/img/szotki-napis.png"
+                className="d-inline-block align-top logo"
+                alt="Szotki" />{' '}- szyfrowane notki...
+            </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
