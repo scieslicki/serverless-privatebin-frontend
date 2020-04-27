@@ -11,7 +11,7 @@
   "Attention": "Uwaga",
   "You can't undo this action!": "Nie będzie można cofnąć tej akcji!",
   "Close": "Zamknij",
-  "Delete": "Usuń",
+  "Destroy now!": "Zniszcz natychmiast!",
 
   "Add new note...": "Dodaj nową notkę...",
   "Add onetime-readable note...": "Dodaj nową jednorazową notkę...",
@@ -39,5 +39,8 @@
   "Enter your password to see the message after decryption...": "Podaj hasło aby zobaczyć wiadomość po odszyfrowaniu...",
   "Save": "Zapisz",
 
-  "Sorry, page not found!": "Przykro mi, nieznaleziono strony!"
+  "Sorry, page not found!": "Przykro mi, nieznaleziono strony!",
+  "Enter password": "Podaj hasło",
+  "Show": "Pokaż",
+  "Hide": "Ukryj"
 }

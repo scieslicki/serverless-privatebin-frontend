@@ -207,17 +207,19 @@ export default function Notes() {
                 >
                   {t("Save")}
                 </LoaderButton>
-                <LoaderButton
-                  block
-                  bsSize="large"
-                  bsStyle="danger"
-                  onClick={handleDelete}
-                  isLoading={isDeleting}
-                >
-                  {t("Delete")}
-                </LoaderButton>
               </div> )
-           : <div></div>}
+           : <div></div> }
+          <div>
+            <LoaderButton
+            block
+            bsSize="large"
+            bsStyle="danger"
+            onClick={handleDelete}
+            isLoading={isDeleting}
+          >
+            {t("Destroy now!")}
+          </LoaderButton>
+          </div>
         </form>
       )}
       <WrongPasswordModal show={show} handleClose={handleClose} />

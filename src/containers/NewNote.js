@@ -127,10 +127,15 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
 
         <FormGroup controlId="password">
           <ControlLabel>{t("Password")}</ControlLabel>
-          <PasswordMask controlId="password"
-            value={password}
-            placeholder="Enter password"
-            onChange={e => setPassword(e.target.value)}
+          <PasswordMask inputClassName="form-control"
+                        buttonClassName="btn btn-primary btn-password"
+                        controlId="password"
+                        value={password}
+                        placeholder={t("Enter password")}
+                        onChange={e => setPassword(e.target.value)}
+                        showButtonContent={t("Show")}
+                        hideButtonContent={t("Hide")}
+                        useVendorStyles="false"
           />
         </FormGroup>
         <FormGroup controlId="content">

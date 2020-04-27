@@ -6,3 +6,13 @@
     height: 300px;
     font-size: 24px;
 }
+
+.btn-password {
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*right: 6px;*/
+    margin-top: -15px !important;
+    /*padding: 4px 10px;*/
+    /*background: rgb(226, 226, 226);*/
+    /*color: rgb(0, 0, 0);*/
+}
