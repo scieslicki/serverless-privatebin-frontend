@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "aws-amplify": "^3.0.8",
     "i18next": "^19.4.4",
+    "i18next-browser-languagedetector": "^4.1.1",
     "i18next-xhr-backend": "^3.2.2",
     "qrcode.react": "^1.0.0",
     "react": "^16.13.1",
