@@ -13,12 +13,14 @@ import Select from 'react-select';
 import {ttlOptions} from "../data/ttl";
 import { readUserId } from "../libs/readUserId";
 import NewNote from "./NewNote";
+import { useTranslation } from 'react-i18next';
 
 const ttlIndex = 4;
 
 export default function NewNoteOnetime() {
   // const file = useRef(null);
   const history = useHistory();
+  const { t, i18n } = useTranslation();
 
   let storedUserId = readUserId();
 
@@ -90,7 +92,7 @@ export default function NewNoteOnetime() {
     <div className="NewNote">
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <ControlLabel>Maksymalna ilość wyświetleń</ControlLabel>
+          <ControlLabel>{t("Maximum number of views")}</ControlLabel>
           <FormControl controlId="telomer"
                        type="number"
                        value={telomer}
@@ -98,7 +100,7 @@ export default function NewNoteOnetime() {
           />
         </FormGroup>
         <FormGroup controlId="ttl">
-          <ControlLabel>Data ważności</ControlLabel>
+          <ControlLabel>{t("Expiration date")}</ControlLabel>
           <Select
             options={ttlOptions}
             defaultValue={ttlOptions[ttlIndex]}
@@ -107,7 +109,7 @@ export default function NewNoteOnetime() {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Data ważności (w minutach)</ControlLabel>
+          <ControlLabel>{t("Expiration date")} {t("(in minutes)")}</ControlLabel>
           <FormControl controlId="ttl"
                        type="number"
                        value={ttl}
@@ -116,7 +118,7 @@ export default function NewNoteOnetime() {
         </FormGroup>
 
         <FormGroup controlId="password">
-          <ControlLabel>Hasło</ControlLabel>
+          <ControlLabel>{t("Password")}</ControlLabel>
           <PasswordMask controlId="password"
             value={password}
             placeholder="Enter password"
@@ -138,7 +140,7 @@ export default function NewNoteOnetime() {
           isLoading={isLoading}
           disabled={!validateForm()}
         >
-          Create
+          {t("Create")}
         </LoaderButton>
       </form>
     </div>

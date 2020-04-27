@@ -1,29 +1,32 @@
 import React from "react";
 import "./InfoBox.css";
+import { useTranslation } from 'react-i18next';
 
 export default function InfoBox({note}) {
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <span className='first-row'>
         <span>
-          Pozostało wyświetleń: <strong>{note.telomer}</strong>
+          {t("Remaining views")}: <strong>{note.telomer}</strong>
         </span>
         <span>
-          Ważny do: <strong>{new Date(note.timeToLive * 1000).toLocaleString()}</strong>
+          {t("Valid to")}: <strong>{new Date(note.timeToLive * 1000).toLocaleString()}</strong>
         </span>
       </span>
       <span className='second-row'>
         <span>
-          Typ: {note.type}
+          {t("Type")}: {note.type}
         </span>
         <span>
-          Utworzono: {new Date(note.createdAt * 1000).toLocaleString()}
+          {t("Created at")}: {new Date(note.createdAt * 1000).toLocaleString()}
         </span>
       </span>
       <span className='third-row'>
         <span>&nbsp;</span>
         {note.readAt
-          ? <span>Odczytano: {new Date(note.readAt * 1000).toLocaleString()}</span>
+          ? <span>{t("Last Read at")}: {new Date(note.readAt * 1000).toLocaleString()}</span>
           : <span></span>
         }
       </span>

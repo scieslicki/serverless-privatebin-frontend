@@ -1,0 +1,43 @@
+{
+  "Introduction": "Introduction",
+  "encrypted notes": "encrypted notes",
+  "New": "New",
+  "About": "About",
+  "Your encrypted notes:": "Your encrypted notes:",
+  "Clear history": "Clear history",
+  "Deleting the note history will clear the list.": "Deleting the note history will clear the list.",
+  "Access to the notes, if still valid, will be possible only through their individual url": "Access to the notes, if still valid, will be possible only through their individual url",
+  "They will no longer appear in this list.": "They will no longer appear in this list.",
+  "Attention": "Attention",
+  "You can't undo this action!": "You can't undo this action!",
+  "Close": "Close",
+  "Delete": "Delete",
+
+  "Add new note...": "Add new note...",
+  "Add onetime-readable note...": "Add onetime-readable note...",
+  "Sorry there was a problem loading this page": "Sorry there was a problem loading this page",
+  "Remaining views": "Remaining views",
+  "Valid to": "Valid to",
+  "Type": "Type",
+  "Created at": "Created at",
+  "Last Read at": "Last Read at",
+  "Copy URL": "Copy URL",
+  "Entered wrong password?": "Entered wrong password?",
+  "Check if you have typed your password correctly.": "Check if you have typed your password correctly.",
+  "If that didn't help, contact the sender...": "If that didn't help, contact the sender...",
+  "The message is encrypted in the browser, before it is sent to the server, if there is no password, it cannot be recovered.": "The message is encrypted in the browser, before it is sent to the server, if there is no password, it cannot be recovered.",
+
+  "Maximum number of views": "Maximum number of views",
+  "Expiration date": "Expiration date",
+  "(in minutes)": "(in minutes)",
+  "Password": "Password",
+  "Create": "Create",
+
+  "Are you sure you want to delete this note?": "Are you sure you want to delete this note?",
+  "Decrypt": "Decrypt",
+
+  "Enter your password to see the message after decryption...": "Enter your password to see the message after decryption...",
+  "Save": "Save",
+
+  "Sorry, page not found!": "Sorry, page not found!"
+}

@@ -1,10 +1,13 @@
 import React from "react";
 import "./NotFound.css";
+import { useTranslation } from 'react-i18next';
 
 export default function NotFound() {
+  const { t, i18n } = useTranslation();
+
   return (
     <div className="NotFound">
-      <h3>Sorry, page not found!</h3>
+      <h3>{t("Sorry, page not found!")}</h3>
     </div>
   );
 }

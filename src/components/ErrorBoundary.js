@@ -1,6 +1,7 @@
 import React from "react";
 import { logError } from "../libs/errorLib";
 import "./ErrorBoundary.css";
+import { useTranslation } from 'react-i18next';
 
 export default class ErrorBoundry extends React.Component {
   state = { hasError: false };
@@ -14,8 +15,12 @@ export default class ErrorBoundry extends React.Component {
   }
 
   render(): React.ReactNode {
+    // const { t, i18n } = useTranslation();
+
     return this.state.hasError ? (
       <div className="ErrorBoundary">
+        {/* todo */}
+        {/*<h3>{t("Sorry there was a problem loading this page")}</h3>*/}
         <h3>Sorry there was a problem loading this page</h3>
       </div>
     ) : (

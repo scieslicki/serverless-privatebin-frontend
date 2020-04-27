@@ -1,0 +1,43 @@
+{
+  "Introduction": "Wstęp",
+  "encrypted notes": "szyfrowane notki",
+  "New": "Nowa",
+  "About": "O nas",
+  "Your encrypted notes:": "Twoje zaszyfrowane notki:",
+  "Clear history": "Wyczyść historię",
+  "Deleting the note history will clear the list.": "Usunięcie historii notek, spowoduje wyczyszczenie listy.",
+  "Access to the notes, if still valid, will be possible only through their individual url": "Dostęp do notek, jeśli będą jeszcze ważne, będzie możliwy tylko przez ich indywidualny adres url",
+  "They will no longer appear in this list.": "Nie będą już więcej wyświetlane na tej liście.",
+  "Attention": "Uwaga",
+  "You can't undo this action!": "Nie będzie można cofnąć tej akcji!",
+  "Close": "Zamknij",
+  "Delete": "Usuń",
+
+  "Add new note...": "Dodaj nową notkę...",
+  "Add onetime-readable note...": "Dodaj nową jednorazową notkę...",
+  "Sorry there was a problem loading this page": "Przepraszam, ale jest jakiś problem z załadowaniem tej strony",
+  "Remaining views": "Pozostało wyświetleń",
+  "Valid to": "Ważna do",
+  "Type": "Typ",
+  "Created at": "Utworzono",
+  "Last Read at": "Ostatnio odczytano",
+  "Copy URL": "Kopiuj URL",
+  "Entered wrong password?": "Wprowadzono złe hasło?",
+  "Check if you have typed your password correctly.": "Sprawdź czy dobrze przepisałeś podane hasło.",
+  "If that didn't help, contact the sender...": "Jeśli to nie pomogło skontaktuj się z nadawcą...",
+  "The message is encrypted in the browser, before it is sent to the server, if there is no password, it cannot be recovered.": "The message is encrypted in the browser, before it is sent to the server, if there is no password, it cannot be recovered.Wiadomość jest szyfrowana w przeglądarce, jeszcze przed wysłaniem jej na serwer, w przypadku braku hasła nie możliwości jej odzyskania.",
+
+  "Maximum number of views": "Maksymalna ilość wyświetleń",
+  "Expiration date": "Data ważności",
+  "(in minutes)": "(w minutach)",
+  "Password": "Hasło",
+  "Create": "Utwórz",
+
+  "Are you sure you want to delete this note?": "Czy na pewno chcesz usunąć tę notkę?",
+  "Decrypt": "Rozszyfruj",
+
+  "Enter your password to see the message after decryption...": "Podaj hasło aby zobaczyć wiadomość po odszyfrowaniu...",
+  "Save": "Zapisz",
+
+  "Sorry, page not found!": "Przykro mi, nieznaleziono strony!"
+}

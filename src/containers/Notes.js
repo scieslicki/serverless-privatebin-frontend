@@ -13,11 +13,13 @@ import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
 import { readUserId } from "../libs/readUserId";
 import WrongPasswordModal from "../components/WrongPasswordModal";
+import { useTranslation } from 'react-i18next';
 
 export default function Notes() {
   // const file = useRef(null);
   const { id, pass } = useParams();
   const history = useHistory();
+  const { t, i18n } = useTranslation();
 
   let storedUserId = readUserId();
 
@@ -135,7 +137,7 @@ export default function Notes() {
     event.preventDefault();
 
     const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
+      t("Are you sure you want to delete this note?")
     );
 
     if (!confirmed) {
@@ -164,7 +166,7 @@ export default function Notes() {
 
           </FormGroup>
           <FormGroup controlId="password">
-            <ControlLabel>Hasło</ControlLabel>
+            <ControlLabel>{t("Password")}</ControlLabel>
             <FormControl type="text"
                          readOnly={passwordDisabled}
                          value={password}
@@ -178,12 +180,12 @@ export default function Notes() {
               bsStyle="warning"
               onClick={handleDecrypt}
             >
-              Pokaż
+              {t("Decrypt")}
             </LoaderButton>
           </FormGroup>
           <FormGroup controlId="content">
             <FormControl
-              placeholder="Podaj hasło aby zobaczyć wiadomość po odszyfrowaniu..."
+              placeholder={t("Enter your password to see the message after decryption...")}
               value={content}
               componentClass="textarea"
               onChange={e => setContent(e.target.value)}
@@ -203,7 +205,7 @@ export default function Notes() {
                   isLoading={isLoading}
                   disabled={!validateForm()}
                 >
-                  Save
+                  {t("Save")}
                 </LoaderButton>
                 <LoaderButton
                   block
@@ -212,7 +214,7 @@ export default function Notes() {
                   onClick={handleDelete}
                   isLoading={isDeleting}
                 >
-                  Delete
+                  {t("Delete")}
                 </LoaderButton>
               </div> )
            : <div></div>}

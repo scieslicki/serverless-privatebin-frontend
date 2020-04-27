@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 import config from './config';
 import { initSentry } from './libs/errorLib';
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+import App from './App';
 
 initSentry();
 
@@ -23,8 +25,11 @@ Amplify.configure({
 });
 
 ReactDOM.render(
+
   <Router>
-    <App />
+    <I18nextProvider i18n={i18n}>
+      <App />
+    </I18nextProvider>,
   </Router>,
   document.getElementById('root')
 );

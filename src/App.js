@@ -9,9 +9,12 @@ import { Auth } from "aws-amplify";
 import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./components/ErrorBoundary";
 import {readUserId} from "./libs/readUserId";
+import { useTranslation } from 'react-i18next';
 
 function App() {
   const history = useHistory();
+
+  const { t, i18n } = useTranslation();
 
   let storedUserId = readUserId();
 
@@ -34,7 +37,7 @@ function App() {
               <img
                 src="/img/szotki-napis.png"
                 className="d-inline-block align-top logo"
-                alt="Szotki" />{' '}- szyfrowane notki...
+                alt="Szotki" />{' '}- {t("encrypted notes")}...
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle />
@@ -42,10 +45,10 @@ function App() {
         <Navbar.Collapse>
           <Nav pullRight>
             <LinkContainer to="/new">
-              <NavItem>Dodaj...</NavItem>
+              <NavItem>{t("New")}...</NavItem>
             </LinkContainer>
             <LinkContainer to="/about">
-              <NavItem>About</NavItem>
+              <NavItem>{t("About")}</NavItem>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>

@@ -3,11 +3,15 @@ import QRCode from "qrcode.react";
 import {FormControl} from "react-bootstrap";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import "./UrlInfo.css";
+import { useTranslation } from 'react-i18next';
 
 export default function UrlInfo({note, url = null}) {
   if (!url) {
     url = window.location.href + note.noteId;
   }
+
+  const { t, i18n } = useTranslation();
+
   return (
   <>
     <div className="info">
@@ -18,7 +22,7 @@ export default function UrlInfo({note, url = null}) {
       <div className='url-link'>
         <FormControl type="text" value={url} readOnly/>
         <CopyToClipboard text={url}>
-          <button>Kopiuj url...</button>
+          <button>{t("Copy URL")}...</button>
         </CopyToClipboard>
       </div>
     </div>

@@ -10,8 +10,10 @@ import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
 import { readUserId, createUserId } from "../libs/readUserId";
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
+  const { t, i18n } = useTranslation();
 
   let storedUserId = readUserId();
 
@@ -55,7 +57,6 @@ export default function Home() {
       return API.get("privatebin", "/privatebin", myInit);
   }
 
-
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 ? (
@@ -75,14 +76,14 @@ export default function Home() {
         <LinkContainer key="new" to="/new">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Dodaj nową notkę...
+              <b>{"\uFF0B"}</b> {t("Add new note...")}
             </h4>
           </ListGroupItem>
         </LinkContainer>
         <LinkContainer key="new_onetime" to="/new-onetime">
           <ListGroupItem>
             <h4>
-              <b>{"\uFF0B"}</b> Dodaj nową jednorazową notkę...
+              <b>{"\uFF0B"}</b> {t("Add onetime-readable note...")}
             </h4>
           </ListGroupItem>
         </LinkContainer>
@@ -111,7 +112,7 @@ export default function Home() {
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>Twoje zaszyfrowane notki:</PageHeader>
+        <PageHeader>{t("Your encrypted notes:")}</PageHeader>
         { renderModal() }
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
