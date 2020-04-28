@@ -12,6 +12,10 @@ export default function UrlInfo({note, url = null}) {
 
   const { t, i18n } = useTranslation();
 
+  if (!note.content) {
+    return (<> </>);
+  }
+
   return (
   <>
     <div className="info">

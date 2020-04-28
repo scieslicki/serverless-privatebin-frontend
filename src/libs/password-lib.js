@@ -1,15 +1,12 @@
 import config from '../config';
 
-export function standarizePassword(password) {
-  if (password.length < 32) {
-    const missingPart = config.defaultPassword.slice(-(32 - password.length));
+export async function standarizePassword(storedUserId, password) {
+  const crypto = require('crypto');
 
-    return password + missingPart;
-  }
+  const newPassword = await crypto
+    .createHash('SHA1')
+    .update(storedUserId + password + config.defaultPassword)
+    .digest('hex');
 
-  if (password.length > 32){
-    return password.slice(-32);
-  }
-
-  return password;
+  return await newPassword.slice(0,32);
 }

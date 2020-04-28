@@ -29,7 +29,7 @@ export default function RemovingModal({
 
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>{t("Close")}</Button>
-          <Button variant="primary" className="btn-danger" onClick={handleRemoving}>{t("Destroy now!")}</Button>
+          <Button variant="primary" className="btn-danger" onClick={handleRemoving}>{t("Delete")}</Button>
         </Modal.Footer>
 
       </Modal>

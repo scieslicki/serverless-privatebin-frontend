@@ -11,6 +11,7 @@ import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
 import { readUserId, createUserId } from "../libs/readUserId";
 import { useTranslation } from 'react-i18next';
+import {ValueContainer} from "react-select/animated/dist/react-select.esm";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -36,6 +37,8 @@ export default function Home() {
         const notes = await loadNotes();
         setNotes(notes);
       } catch (e) {
+
+        //todo see notfount message
         onError(e);
       }
 
@@ -59,7 +62,7 @@ export default function Home() {
 
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
-      i !== 0 ? (
+      i !== 0 && note.content ? (
         <div>
           <LinkContainer key={note.noteId} to={`/${note.noteId}`}>
             <ListGroupItem header={note.noteId}>
@@ -70,8 +73,19 @@ export default function Home() {
           <UrlInfo note={note}/>
 
         </div>
+    ) : i !== 0 && !note.content ? (
+        <div>
+          <div>
+            <ListGroupItem header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
+              <InfoBox note={note}/>
+            </ListGroupItem>
+          </div>
 
-    ) : (
+          <UrlInfo note={note}/>
+
+        </div>
+      ) :
+        (
       <div>
         <LinkContainer key="new" to="/new">
           <ListGroupItem>

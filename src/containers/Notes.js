@@ -117,7 +117,7 @@ export default function Notes() {
     let content;
 
     try {
-      content = decrypt(note.content, note.iv, note.tag, standarizePassword(password));
+      content = decrypt(note.content, note.iv, note.tag, await standarizePassword(note.userId, password));
 
       setContent(content);
 

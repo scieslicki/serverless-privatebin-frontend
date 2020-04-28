@@ -57,8 +57,10 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
 
     setIsLoading(true);
 
+    const secret = await standarizePassword(storedUserId, password);
+
     try {
-      const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
+      const { ciphertext, iv, tag } = encrypt(content, secret);
 
       let autopass = false;
 
@@ -79,7 +81,7 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
       );
       history.push("/");
     } catch (e) {
-      onError(e);
+      onError(e + secret + secret.length);
       setIsLoading(false);
     }
   }

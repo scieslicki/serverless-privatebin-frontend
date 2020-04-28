@@ -6,6 +6,7 @@
   "Your encrypted notes:": "Twoje zaszyfrowane notki:",
   "Clear history": "Wyczyść historię",
   "Deleting the note history will clear the list.": "Usunięcie historii notek, spowoduje wyczyszczenie listy.",
+  "Delete": "Wyczyść",
   "Access to the notes, if still valid, will be possible only through their individual url": "Dostęp do notek, jeśli będą jeszcze ważne, będzie możliwy tylko przez ich indywidualny adres url",
   "They will no longer appear in this list.": "Nie będą już więcej wyświetlane na tej liście.",
   "Attention": "Uwaga",
@@ -42,5 +43,6 @@
   "Sorry, page not found!": "Przykro mi, nieznaleziono strony!",
   "Enter password": "Podaj hasło",
   "Show": "Pokaż",
-  "Hide": "Ukryj"
+  "Hide": "Ukryj",
+  "Deleted or expired": "Usunięta lub wygasła"
 }
