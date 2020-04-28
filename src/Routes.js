@@ -5,6 +5,7 @@ import NotFound from "./containers/NotFound";
 import NewNote from "./containers/NewNote";
 import NewNoteOnetime from "./containers/NewNoteOnetime";
 import Notes from "./containers/Notes";
+import SetUser from "./containers/SetUser";
 
 export default function Routes() {
   return (
@@ -12,9 +13,9 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      {/*<Route exact path="/user/:id">*/}
-      {/*  <SetUser />*/}
-      {/*</Route>*/}
+      <Route exact path="/user/:id">
+        <SetUser />
+      </Route>
       <Route exact path="/new">
         <NewNote />
       </Route>

@@ -7,7 +7,7 @@
   "Clear history": "Clear history",
   "Deleting the note history will clear the list.": "Deleting the note history will clear the list.",
   "Delete": "Delete",
-  "Access to the notes, if still valid, will be possible only through their individual url": "Access to the notes, if still valid, will be possible only through their individual url",
+  "Access to the notes, if still valid, will be possible only through their individual url.": "Access to the notes, if still valid, will be possible only through their individual url.",
   "They will no longer appear in this list.": "They will no longer appear in this list.",
   "Attention": "Attention",
   "You can't undo this action!": "You can't undo this action!",
@@ -66,6 +66,8 @@
   "javascript code": "javascript code",
   "bash code": "bash code",
   "json code": "json code",
-  "yaml code": "yaml code"
+  "yaml code": "yaml code",
+
+  "Link to my history": "Link to my history"
 
 }

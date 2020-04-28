@@ -27,9 +27,7 @@ import 'prismjs/components/prism-yaml';
 
 import {typeOptions} from "../data/type-options";
 
-
 export default function Notes() {
-  // const file = useRef(null);
   const { id, pass } = useParams();
   const history = useHistory();
   const { t, i18n } = useTranslation();

@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from "react";
-import {PageHeader, ListGroup, ListGroupItem, FormControl, Modal, Button } from "react-bootstrap";
-import { useAppContext } from "../libs/contextLib";
-import { onError } from "../libs/errorLib";
+import React, {useState, useEffect} from "react";
+import {PageHeader, ListGroup, ListGroupItem, FormControl, Modal, Button} from "react-bootstrap";
+import {useAppContext} from "../libs/contextLib";
+import {onError} from "../libs/errorLib";
 import "./Home.css";
-import { API } from "aws-amplify";
-import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
+import {API} from "aws-amplify";
+import {LinkContainer} from "react-router-bootstrap";
+import {Link} from "react-router-dom";
 import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
-import { readUserId, createUserId } from "../libs/readUserId";
-import { useTranslation } from 'react-i18next';
+import {readUserId, createUserId} from "../libs/readUserId";
+import {useTranslation} from 'react-i18next';
+import MyUserIdModal from "../components/MyUserIdModal";
 
 export default function Home() {
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
 
   let storedUserId = readUserId();
 
   const [notes, setNotes] = useState([]);
-  // const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showRemove, setShowRemove] = useState(false);
+  const [showUserId, setShowUserId] = useState(false);
+  const handleRemoveClose = () => setShowRemove(false);
+  const handleRemoveShow = () => setShowRemove(true);
+  const handleUserIdClose = () => setShowUserId(false);
+  const handleUserIdShow = () => setShowUserId(true);
 
 
   useEffect(() => {
     async function onLoad() {
-      // if (!isAuthenticated) {
-      //   return;
-      // }
-
       try {
         const notes = await loadNotes();
         setNotes(notes);
@@ -45,7 +44,6 @@ export default function Home() {
     }
 
     onLoad();
-  // }, [isAuthenticated]);
   }, []);
 
   function loadNotes() {
@@ -56,7 +54,7 @@ export default function Home() {
       }
     }
 
-      return API.get("privatebin", "/privatebin", myInit);
+    return API.get("privatebin", "/privatebin", myInit);
   }
 
   function renderNotesList(notes) {
@@ -72,36 +70,36 @@ export default function Home() {
           <UrlInfo note={note}/>
 
         </div>
-    ) : i !== 0 && !note.content ? (
-        <div>
+      ) : i !== 0 && !note.content ? (
           <div>
-            <ListGroupItem className="deleted-note" header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
-              <InfoBox note={note}/>
-            </ListGroupItem>
+            <div>
+              <ListGroupItem className="deleted-note" header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
+                <InfoBox note={note}/>
+              </ListGroupItem>
+            </div>
+
+            <UrlInfo note={note}/>
+
           </div>
-
-          <UrlInfo note={note}/>
-
-        </div>
-      ) :
+        ) :
         (
-      <div>
-        <LinkContainer key="new" to="/new">
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> {t("Add new note...")}
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
-        <LinkContainer key="new_onetime" to="/new-onetime">
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> {t("Add onetime-readable note...")}
-            </h4>
-          </ListGroupItem>
-        </LinkContainer>
-      </div>
-      )
+          <div>
+            <LinkContainer key="new" to="/new">
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> {t("Add new note...")}
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>
+            <LinkContainer key="new_onetime" to="/new-onetime">
+              <ListGroupItem>
+                <h4>
+                  <b>{"\uFF0B"}</b> {t("Add onetime-readable note...")}
+                </h4>
+              </ListGroupItem>
+            </LinkContainer>
+          </div>
+        )
     );
   }
 
@@ -126,7 +124,6 @@ export default function Home() {
     return (
       <div className="notes">
         <PageHeader>{t("Your encrypted notes:")}</PageHeader>
-        { renderModal() }
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
@@ -141,21 +138,34 @@ export default function Home() {
 
       setNotes([]);
 
-      handleClose();
+      handleRemoveClose();
     };
 
     return (
       <RemovingModal
-        show={show}
-        handleShow={handleShow}
-        handleClose={handleClose}
+        show={showRemove}
+        handleShow={handleRemoveShow}
+        handleClose={handleRemoveClose}
         handleRemoving={handleRemoving}
+      />
+    );
+  }
+
+  function renderMyUserId() {
+    return (
+      <MyUserIdModal
+        show={showUserId}
+        handleShow={handleUserIdShow}
+        handleClose={handleUserIdClose}
+        userId={readUserId()}
       />
     );
   }
 
   return (
     <div className="Home">
+      {renderModal()}
+      {renderMyUserId()}
       {renderNotes()}
       {/*{isAuthenticated ? renderNotes() : renderLander()}*/}
     </div>

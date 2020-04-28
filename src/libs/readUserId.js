@@ -13,6 +13,11 @@ export function readUserId () {
   return storedUserId;
 }
 
+export function saveUserId(userId) {
+  localStorage.setItem('userId', userId);
+}
+
+
 export function createUserId() {
   let storedUserId = uuid.v1();
   localStorage.setItem('userId', storedUserId);
