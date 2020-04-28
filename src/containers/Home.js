@@ -11,7 +11,6 @@ import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
 import { readUserId, createUserId } from "../libs/readUserId";
 import { useTranslation } from 'react-i18next';
-import {ValueContainer} from "react-select/animated/dist/react-select.esm";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -76,7 +75,7 @@ export default function Home() {
     ) : i !== 0 && !note.content ? (
         <div>
           <div>
-            <ListGroupItem header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
+            <ListGroupItem className="deleted-note" header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
               <InfoBox note={note}/>
             </ListGroupItem>
           </div>

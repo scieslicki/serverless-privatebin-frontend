@@ -12,6 +12,9 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
+      {/*<Route exact path="/user/:id">*/}
+      {/*  <SetUser />*/}
+      {/*</Route>*/}
       <Route exact path="/new">
         <NewNote />
       </Route>

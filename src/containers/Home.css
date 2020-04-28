@@ -30,3 +30,7 @@
 .Home .lander div a:first-child {
     margin-right: 20px;
 }
+
+.deleted-note {
+    background-color: #f7f7f7;
+}

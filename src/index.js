@@ -25,7 +25,6 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-
   <Router>
     <I18nextProvider i18n={i18n}>
       <App />
