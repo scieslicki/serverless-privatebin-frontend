@@ -3,7 +3,7 @@
   "encrypted notes": "encrypted notes",
   "New": "New",
   "About": "About",
-  "Your encrypted notes:": "Your encrypted notes:",
+  "Your encrypted notes": "Your encrypted notes:",
   "Clear history": "Clear history",
   "Deleting the note history will clear the list.": "Deleting the note history will clear the list.",
   "Delete": "Delete",
@@ -44,5 +44,28 @@
   "Enter password": "Enter password",
   "Show": "Show",
   "Hide": "Hide",
-  "Deleted or expired": "Deleted or expired"
+  "Deleted or expired": "Deleted or expired",
+
+  "Message Type": "Message Type",
+
+  "quarter of an hour": "quarter of an hour",
+  "half an hour": "half an hour",
+  "an hour": "an hour",
+  "half a day": "half a day",
+  "a day": "a day",
+  "a week": "a week",
+  "two weeks": "two weeks",
+  "a month": "a month",
+  "quarter of the year": "quarter of the year",
+  "half a year": "half a year",
+  "year": "year",
+
+  "text": "text",
+  "css code": "css code",
+  "html code": "html code",
+  "javascript code": "javascript code",
+  "bash code": "bash code",
+  "json code": "json code",
+  "yaml code": "yaml code"
+
 }

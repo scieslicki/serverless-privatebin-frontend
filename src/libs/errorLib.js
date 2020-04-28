@@ -34,6 +34,6 @@ export function onError(error) {
   }
 
   logError(error, errorInfo);
-
-  alert(message);
+console.log(error);
+  alert(error);
 }

@@ -10,7 +10,7 @@ import { API } from "aws-amplify";
 import { encrypt } from "../libs/Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import Select from 'react-select';
-import {ttlOptions} from "../data/ttl";
+import {ttlOptions} from "../data/ttl-options";
 import { readUserId } from "../libs/readUserId";
 import NewNote from "./NewNote";
 import { useTranslation } from 'react-i18next';

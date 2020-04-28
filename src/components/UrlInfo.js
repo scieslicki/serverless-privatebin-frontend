@@ -26,7 +26,7 @@ export default function UrlInfo({note, url = null}) {
       <div className='url-link'>
         <FormControl type="text" value={url} readOnly/>
         <CopyToClipboard text={url}>
-          <button>{t("Copy URL")}...</button>
+          <button type="button">{t("Copy URL")}...</button>
         </CopyToClipboard>
       </div>
     </div>

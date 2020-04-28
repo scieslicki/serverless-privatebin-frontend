@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {FormGroup, FormControl, ControlLabel, MenuItem} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, MenuItem, InputGroup, PanelGroup} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import PasswordMask from 'react-password-mask';
 import { onError } from "../libs/errorLib";
@@ -10,11 +10,53 @@ import { API } from "aws-amplify";
 import { encrypt } from "../libs/Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import Select from 'react-select';
-import {ttlOptions} from "../data/ttl";
+import {ttlOptions} from "../data/ttl-options";
+import {typeOptions} from "../data/type-options";
 import { readUserId } from "../libs/readUserId";
 import { useTranslation } from 'react-i18next';
+import dedent from 'dedent';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-yaml';
+// import prettier from "prettier/standalone";
+// import parserHtml from "prettier/parser-html";
+
+
+// {
+//   "arrowParens": "always",
+//   "bracketSpacing": true,
+//   "htmlWhitespaceSensitivity": "css",
+//   "insertPragma": false,
+//   "jsxBracketSameLine": false,
+//   "jsxSingleQuote": false,
+//   "printWidth": 80,
+//   "proseWrap": "preserve",
+//   "quoteProps": "as-needed",
+//   "requirePragma": false,
+//   "semi": true,
+//   "singleQuote": false,
+//   "tabWidth": 2,
+//   "trailingComma": "es5",
+//   "useTabs": false,
+//   "vueIndentScriptAndStyle": false
+// }
+
+//todo button with preattier :) - reformat code
+
+// const newContent = prettier.format(content.code, {
+//   parser: "html",
+//   plugins: [parserHtml],
+// });
+
 
 const ttlIndex = 4;
+const typeIndex = 0;
 
 export default function NewNote(initial = 3, addPasswordToUrl = false) {
   // const file = useRef(null);
@@ -31,36 +73,36 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
 
   const [telomer, setTelomer] = useState(initial);
   const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
-  const [content, setContent] = useState("");
+  const [type, setType] = useState(typeOptions[typeIndex].value);
+  const [content, setContent] = useState({code: ''});
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  function validateForm() {
-    return content.length > 0;
-  }
+  let translatedTtlOptions = [];
 
-  // function handleFileChange(event) {
-  //   file.current = event.target.files[0];
-  // }
+  ttlOptions.forEach((item) => {
+    translatedTtlOptions.push({value: item.value, label: t(item.label)});
+  });
+
+  let translatedTypeOptions = [];
+
+  typeOptions.forEach((item) => {
+    translatedTypeOptions.push({value: item.value, label: t(item.label)});
+  });
+
+  function validateForm() {
+    return content.code.length > 0;
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    // if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-    //   alert(
-    //     `Please pick a file smaller than ${
-    //       config.MAX_ATTACHMENT_SIZE / 1000000
-    //     } MB.`
-    //   );
-    //   return;
-    // }
 
     setIsLoading(true);
 
     const secret = await standarizePassword(storedUserId, password);
 
     try {
-      const { ciphertext, iv, tag } = encrypt(content, secret);
+      const { ciphertext, iv, tag } = encrypt(content.code, secret);
 
       let autopass = false;
 
@@ -70,7 +112,7 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
       
       await createNote({
         userId: storedUserId,
-        type: 'text',
+        type: type,
         ttl: parseInt(ttl),
         telomer: parseInt(telomer),
         content: ciphertext,
@@ -81,7 +123,7 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
       );
       history.push("/");
     } catch (e) {
-      onError(e + secret + secret.length);
+      onError(e);
       setIsLoading(false);
     }
   }
@@ -92,40 +134,76 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
     });
   }
 
-  // const CustomOption = ({ innerProps, isDisabled }) =>
-  //   innerProps.options = ttlOptions
-  //   !isDisabled ? (
-  //     <div {...innerProps}>{/* your component internals */}</div>
-  //   ) : null;
+  function highlightByType(code) {
+    const splitted = type.split('/');
+
+    let shortType = splitted[1];
+
+    if (shortType === 'plain') {
+      shortType = 'html';
+    }
+
+    return highlight(code, languages[shortType]);
+  }
 
   return (
     <div className="NewNote">
       <form onSubmit={handleSubmit}>
-        <FormGroup>
-          <ControlLabel>{t("Maximum number of views")}</ControlLabel>
-          <FormControl controlId="telomer"
-                       type="number"
-                       value={telomer}
-                       onChange={e => setTelomer(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup controlId="ttl">
-          <ControlLabel>{t("Expiration date")}</ControlLabel>
-          <Select
-            options={ttlOptions}
-            defaultValue={ttlOptions[ttlIndex]}
-            onChange={e => setTtl(e.value)}
-             />
-        </FormGroup>
 
         <FormGroup>
-          <ControlLabel>{t("Expiration date")} {t("(in minutes)")}</ControlLabel>
-          <FormControl controlId="ttl"
-                       type="number"
-                       value={ttl}
-                       onChange={e => setTtl(e.target.value)}
-          />
+          <div className="col-sm-6 col-lg-6 col-sm-12">
+
+            <ControlLabel>{t("Maximum number of views")}</ControlLabel>
+            <FormControl controlId="telomer"
+                         type="number"
+                         value={telomer}
+                         onChange={e => setTelomer(e.target.value)}
+            />
+          </div>
+
+          <div className="col-sm-6 col-lg-6 col-sm-12">
+            <ControlLabel>{t("Message Type")}</ControlLabel>
+            <Select
+              controlId="type"
+              options={translatedTypeOptions}
+              defaultValue={translatedTypeOptions[typeIndex]}
+              onChange={e => setType(e.value)}
+            />
+
+          </div>
         </FormGroup>
+
+        <FormGroup controlId="ttl">
+          <div className="col-sm-6 col-lg-6 col-sm-12">
+
+            <ControlLabel>{t("Expiration date")}</ControlLabel>
+              <Select
+                options={translatedTtlOptions}
+                defaultValue={translatedTtlOptions[ttlIndex]}
+                onChange={e => setTtl(e.value)}
+                 />
+          </div>
+
+           <div className="col-sm-6 col-lg-6 col-sm-12">
+              <ControlLabel>{t("Expiration date")} {t("(in minutes)")}</ControlLabel>
+              <FormControl controlId="ttl"
+                           type="number"
+                           value={ttl}
+                           onChange={e => setTtl(e.target.value)}
+              />
+           </div>
+        </FormGroup>
+
+        {/*<FormGroup>*/}
+        {/*  <InputGroup>*/}
+        {/*    <ControlLabel>{t("Expiration date")} {t("(in minutes)")}</ControlLabel>*/}
+        {/*    <FormControl controlId="ttl"*/}
+        {/*                 type="number"*/}
+        {/*                 value={ttl}*/}
+        {/*                 onChange={e => setTtl(e.target.value)}*/}
+        {/*    />*/}
+        {/*  </InputGroup>*/}
+        {/*</FormGroup>*/}
 
         <FormGroup controlId="password">
           <ControlLabel>{t("Password")}</ControlLabel>
@@ -140,13 +218,27 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
                         useVendorStyles="false"
           />
         </FormGroup>
+
         <FormGroup controlId="content">
-          <FormControl
-            value={content}
-            componentClass="textarea"
-            onChange={e => setContent(e.target.value)}
-          />
+          <Editor
+            value={content.code}
+            onValueChange={code => setContent({ code })}
+            highlight={code => highlightByType(code)}
+            padding={10}
+            style={{
+              fontFamily: '"Fira code", "Fira Mono", monospace',
+              // fontSize: 12,
+            }}
+          className="container__editor"
+        />
+
+          {/*<FormControl*/}
+          {/*  value={content}*/}
+          {/*  componentClass="textarea"*/}
+          {/*  onChange={e => setContent(e.target.value)}*/}
+          {/*/>*/}
         </FormGroup>
+
         <LoaderButton
           block
           type="submit"

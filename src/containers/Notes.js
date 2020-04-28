@@ -14,6 +14,19 @@ import UrlInfo from "../components/UrlInfo";
 import { readUserId } from "../libs/readUserId";
 import WrongPasswordModal from "../components/WrongPasswordModal";
 import { useTranslation } from 'react-i18next';
+import dedent from 'dedent';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-yaml';
+
+import {typeOptions} from "../data/type-options";
+
 
 export default function Notes() {
   // const file = useRef(null);
@@ -27,11 +40,12 @@ export default function Notes() {
 
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState(pass);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState({code:""} );
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [show, setShow] = useState(false);
   const [passwordDisabled, setPasswordDisabled] = useState(false);
+  const [type, setType] = useState('text/html');
   const handleClose = () => setShow(false);
 
   useEffect(() => {
@@ -50,8 +64,9 @@ export default function Notes() {
         // }
 
         // setContent(content);
-        setContent('');
+        setContent({code:''});
         setNote(note);
+        setType(note.type);
       } catch (e) {
         onError(e);
       }
@@ -117,12 +132,11 @@ export default function Notes() {
     let content;
 
     try {
-      content = decrypt(note.content, note.iv, note.tag, await standarizePassword(note.userId, password));
+      content = decrypt(note.content, note.iv, note.tag, await standarizePassword(note.userId, password ? password : ''));
 
-      setContent(content);
+      setContent({code: content});
 
       setPasswordDisabled(true);
-      
     } catch {
       setShow(true);
       // alert('Wrong password');
@@ -155,6 +169,26 @@ export default function Notes() {
     }
   }
 
+  function highlightByType(code) {
+    if (type) {
+      const splitted = type.split('/');
+
+      if (splitted[0] === 'text') {
+        let shortType = splitted[1];
+
+        if (shortType === 'plain') {
+          shortType = 'html';
+        }
+
+        return highlight(code, languages[shortType]);
+      }
+
+      return highlight(code, languages.html);
+    }
+
+    return highlight(code, languages.html);
+  }
+
   return (
     <div className="Notes">
       {note && (
@@ -179,17 +213,30 @@ export default function Notes() {
               bsSize="large"
               bsStyle="warning"
               onClick={handleDecrypt}
+              disabled={passwordDisabled}
             >
               {t("Decrypt")}
             </LoaderButton>
           </FormGroup>
           <FormGroup controlId="content">
-            <FormControl
-              placeholder={t("Enter your password to see the message after decryption...")}
-              value={content}
-              componentClass="textarea"
-              onChange={e => setContent(e.target.value)}
+            <Editor
+              value={content.code}
+              onValueChange={code => setContent({ code })}
+              highlight={code => highlightByType(code)}
+              padding={10}
+              style={{
+                fontFamily: '"Fira code", "Fira Mono", monospace',
+                // fontSize: 12,
+              }}
+              className="container__editor"
             />
+
+            {/*<FormControl*/}
+            {/*  placeholder={t("Enter your password to see the message after decryption...")}*/}
+            {/*  value={content}*/}
+            {/*  componentClass="textarea"*/}
+            {/*  onChange={e => setContent(e.target.value)}*/}
+            {/*/>*/}
           </FormGroup>
           <div>
             <UrlInfo note={note} url={window.location.href}/>
@@ -225,6 +272,5 @@ export default function Notes() {
       <WrongPasswordModal show={show} handleClose={handleClose} />
 
     </div>
-
   );
 }
