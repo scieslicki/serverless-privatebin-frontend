@@ -130,12 +130,19 @@ export default function Notes() {
     let content;
 
     try {
-      content = decrypt(note.content, note.iv, note.tag, await standarizePassword(note.userId, password ? password : ''));
+      content = decrypt(
+        note.content,
+        note.iv,
+        note.tag,
+        await standarizePassword(note.userId, password ? password : ''),
+        note.compression
+      );
 
       setContent({code: content});
 
       setPasswordDisabled(true);
-    } catch {
+    } catch (e) {
+      console.log(e);
       setShow(true);
       // alert('Wrong password');
     }

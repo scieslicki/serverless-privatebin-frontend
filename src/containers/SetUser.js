@@ -10,6 +10,4 @@ export default function SetUser() {
   const history = useHistory();
 
   history.push("/");
-
-  return (<></>);
 }

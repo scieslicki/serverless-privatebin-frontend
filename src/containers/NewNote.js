@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import {FormGroup, FormControl, ControlLabel, MenuItem, InputGroup, PanelGroup} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import PasswordMask from 'react-password-mask';
 import { onError } from "../libs/errorLib";
-import config from "../config";
 import "./NewNote.css";
 import { API } from "aws-amplify";
 import { encrypt } from "../libs/Aes-256";
@@ -14,7 +13,6 @@ import {ttlOptions} from "../data/ttl-options";
 import {typeOptions} from "../data/type-options";
 import { readUserId } from "../libs/readUserId";
 import { useTranslation } from 'react-i18next';
-import dedent from 'dedent';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
@@ -58,8 +56,13 @@ import 'prismjs/components/prism-yaml';
 const ttlIndex = 4;
 const typeIndex = 0;
 
-export default function NewNote(initial = 3, addPasswordToUrl = false) {
-  // const file = useRef(null);
+// export default function NewNote(initial = 3, addPasswordToUrl = false) {
+export default function NewNote({
+                                  initial = 3,
+                                  addPasswordToUrl = false,
+                                  message,
+                                  addPassword
+}) {
   const history = useHistory();
   const { t, i18n } = useTranslation();
 
@@ -74,8 +77,8 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
   const [telomer, setTelomer] = useState(initial);
   const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
   const [type, setType] = useState(typeOptions[typeIndex].value);
-  const [content, setContent] = useState({code: ''});
-  const [password, setPassword] = useState("");
+  const [content, setContent] = useState({code: message ? message : ''});
+  const [password, setPassword] = useState(addPassword ? addPassword : '');
   const [isLoading, setIsLoading] = useState(false);
 
   let translatedTtlOptions = [];
@@ -99,10 +102,11 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
 
     setIsLoading(true);
 
+    const msgSize = content.code.length;
     const secret = await standarizePassword(storedUserId, password);
 
     try {
-      const { ciphertext, iv, tag } = encrypt(content.code, secret);
+      const { ciphertext, iv, tag, compression } = encrypt(content.code, secret);
 
       let autopass = false;
 
@@ -118,6 +122,8 @@ export default function NewNote(initial = 3, addPasswordToUrl = false) {
         content: ciphertext,
         iv,
         tag,
+        compression,
+        size: parseInt(msgSize),
         autopass
       }
       );
