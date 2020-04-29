@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
-import {Image, Nav, Navbar, NavItem} from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import {Nav, Navbar, NavItem} from "react-bootstrap";
 import './App.css';
 import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
-import { AppContext } from "./libs/contextLib";
-import { Auth } from "aws-amplify";
-import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./components/ErrorBoundary";
-import {readUserId} from "./libs/readUserId";
 import { useTranslation } from 'react-i18next';
 
 function App() {
-  const history = useHistory();
-
-  const { t, i18n } = useTranslation();
-
-  let storedUserId = readUserId();
-
-  const [userId, setUserId] = useState(storedUserId);
+  const { t } = useTranslation();
 
   useEffect(() => {
     onLoad();
   }, []);
 
   async function onLoad() {
-  //   setUserId(uuid.v4());
   }
 
   return (
@@ -54,11 +43,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
       <ErrorBoundary>
-        {/*<AppContext.Provider*/}
-        {/*  value={{ isAuthenticated, userHasAuthenticated }}*/}
-        {/*>*/}
           <Routes />
-        {/*</AppContext.Provider>*/}
       </ErrorBoundary>
     </div>
   )

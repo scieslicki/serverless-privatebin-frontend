@@ -7,7 +7,7 @@ export default function MyUserIdModal({
                                         handleShow,
                                         handleClose,
                                         userId}) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const url = window.location.href + 'user/' + userId;
 

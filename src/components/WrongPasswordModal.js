@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 export default function WrongPasswordModal({
                                         show,
                                         handleClose}) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>

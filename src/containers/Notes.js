@@ -1,12 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { API, Storage } from "aws-amplify";
+import { API } from "aws-amplify";
 import { onError } from "../libs/errorLib";
 import {FormGroup, FormControl, ControlLabel, ListGroupItem, Button} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import config from "../config";
 import "./Notes.css";
-import { s3Upload } from "../libs/awsLib";
 import {decrypt, encrypt} from "../libs/Aes-256";
 import {standarizePassword} from "../libs/password-lib";
 import InfoBox from "../components/InfoBox";
@@ -14,7 +12,6 @@ import UrlInfo from "../components/UrlInfo";
 import { readUserId } from "../libs/readUserId";
 import WrongPasswordModal from "../components/WrongPasswordModal";
 import { useTranslation } from 'react-i18next';
-import dedent from 'dedent';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
@@ -26,30 +23,23 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 
 import {typeOptions} from "../data/type-options";
-import {ttlOptions} from "../data/ttl-options";
 import {saveNote as saveToStoreNote} from "../libs/store-note";
 
-const ttlIndex = 4;
 const typeIndex = 0;
 
 export default function Notes() {
   const { id, pass } = useParams();
   const history = useHistory();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   let storedUserId = readUserId();
-
-  const [userId, setUserId] = useState(storedUserId);
 
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState(pass);
   const [content, setContent] = useState({ code:"" } );
-  const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [show, setShow] = useState(false);
   const [passwordDisabled, setPasswordDisabled] = useState(false);
-  const [telomer, setTelomer] = useState(3);
-  const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
   const [type, setType] = useState(typeOptions[typeIndex].value);
   const handleClose = () => setShow(false);
 
@@ -61,8 +51,6 @@ export default function Notes() {
     async function onLoad() {
       try {
         const note = await loadNote();
-        // const { content, attachment } = note;
-        const { content } = note;
 
         setContent({code:''});
         setNote(note);
@@ -74,10 +62,6 @@ export default function Notes() {
 
     onLoad();
   }, [id]);
-
-  function validateForm() {
-    return content.length > 0;
-  }
 
   function createCommonNote(note, withPassword = false) {
     const result = {
@@ -101,7 +85,6 @@ export default function Notes() {
     history.push("/response");
   }
 
-
   function saveNote(note) {
     return API.put("privatebin", `/privatebin/${id}`, {
       body: note
@@ -110,8 +93,6 @@ export default function Notes() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
-    setIsLoading(true);
 
     try {
       const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
@@ -123,7 +104,6 @@ export default function Notes() {
       history.push("/");
     } catch (e) {
       onError(e);
-      setIsLoading(false);
     }
   }
 
@@ -233,17 +213,9 @@ export default function Notes() {
               padding={10}
               style={{
                 fontFamily: '"Fira code", "Fira Mono", monospace',
-                // fontSize: 12,
               }}
               className="container__editor"
             />
-
-            {/*<FormControl*/}
-            {/*  placeholder={t("Enter your password to see the message after decryption...")}*/}
-            {/*  value={content}*/}
-            {/*  componentClass="textarea"*/}
-            {/*  onChange={e => setContent(e.target.value)}*/}
-            {/*/>*/}
           </FormGroup>
           <div>
             <UrlInfo note={note} url={window.location.href}/>
@@ -259,21 +231,6 @@ export default function Notes() {
               {t("Reply")}
             </Button>
           </div>
-            {/*{ storedUserId == note.userId ?*/}
-            {/*(*/}
-            {/*  <div>*/}
-            {/*    <LoaderButton*/}
-            {/*      block*/}
-            {/*      type="submit"*/}
-            {/*      bsSize="large"*/}
-            {/*      bsStyle="primary"*/}
-            {/*      isLoading={isLoading}*/}
-            {/*      disabled={!validateForm()}*/}
-            {/*    >*/}
-            {/*      {t("Save")}*/}
-           {/*     </LoaderButton>*/}
-           {/*   </div> )*/}
-           {/*: <div></div> }*/}
           <div>
             <LoaderButton
             block

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import filesize from 'filesize';
 
 export default function InfoBox({note}) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>

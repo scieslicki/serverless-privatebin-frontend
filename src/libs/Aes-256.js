@@ -2,8 +2,6 @@
  * @fileoverview Provides easy encryption/decryption methods using AES 256 GCM.
  */
 
-'use strict';
-
 const crypto = require('crypto');
 var zlib = require('zlib');
 

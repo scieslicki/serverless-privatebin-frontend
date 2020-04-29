@@ -7,7 +7,7 @@ export default function RemovingModal({
                                         handleShow,
                                         handleClose,
                                         handleRemoving}) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <>

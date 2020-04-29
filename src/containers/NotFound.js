@@ -3,7 +3,7 @@ import "./NotFound.css";
 import { useTranslation } from 'react-i18next';
 
 export default function NotFound() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="NotFound">

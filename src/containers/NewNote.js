@@ -22,7 +22,6 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
-import {saveNote} from "../libs/store-note";
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -57,7 +56,6 @@ import {saveNote} from "../libs/store-note";
 const ttlIndex = 4;
 const typeIndex = 0;
 
-// export default function NewNote(initial = 3, addPasswordToUrl = false) {
 export default function NewNote({
                                   initial = 3,
                                   addPasswordToUrl = false,
@@ -66,11 +64,9 @@ export default function NewNote({
                                   note
 }) {
   const history = useHistory();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   let storedUserId = readUserId();
-
-  const [userId, setUserId] = useState(storedUserId);
 
   if (!Number.isInteger(initial)) {
     initial = 3;
@@ -78,7 +74,6 @@ export default function NewNote({
 
   const [telomer, setTelomer] = useState(note && note.telomer ? note.telomer : initial);
   const [ttl, setTtl] = useState(note && note.ttl ? note.ttl : ttlOptions[ttlIndex].value);  //w minutach
-  // doesn't work type... change
   const [type, setType] = useState(note && note.type ? note.type : typeOptions[typeIndex].value);
   const [content, setContent] = useState(note && note.content ? {code: `
 
@@ -243,16 +238,9 @@ export default function NewNote({
             padding={10}
             style={{
               fontFamily: '"Fira code", "Fira Mono", monospace',
-              // fontSize: 12,
             }}
           className="container__editor"
         />
-
-          {/*<FormControl*/}
-          {/*  value={content}*/}
-          {/*  componentClass="textarea"*/}
-          {/*  onChange={e => setContent(e.target.value)}*/}
-          {/*/>*/}
         </FormGroup>
 
         <LoaderButton

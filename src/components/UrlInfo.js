@@ -11,10 +11,10 @@ export default function UrlInfo({note, url = null}) {
     url = window.location.href + note.noteId;
   }
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (!note.content) {
-    return (<> </>);
+    return (<></>);
   }
 
   return (

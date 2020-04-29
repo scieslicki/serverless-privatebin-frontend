@@ -1,14 +1,11 @@
 import React from "react";
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-// import XHR from "i18next-xhr-backend";
-import {Link} from "react-router-dom";
 
 import translationEng from "./locales/en/translation.json";
 import translationPol from "./locales/pl/translation.json";
 
 i18n
-  // .use(XHR)
   .use(LanguageDetector)
   .init(
     {

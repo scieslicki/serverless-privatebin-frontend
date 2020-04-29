@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {PageHeader, ListGroup, ListGroupItem, FormControl, Modal, Button} from "react-bootstrap";
-import {useAppContext} from "../libs/contextLib";
+import {PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
 import {onError} from "../libs/errorLib";
 import "./Home.css";
 import {API} from "aws-amplify";
 import {LinkContainer} from "react-router-bootstrap";
-import {Link} from "react-router-dom";
 import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
@@ -14,7 +12,7 @@ import {useTranslation} from 'react-i18next';
 import MyUserIdModal from "../components/MyUserIdModal";
 
 export default function Home() {
-  const {t, i18n} = useTranslation();
+  const { t } = useTranslation();
 
   let storedUserId = readUserId();
 
@@ -60,7 +58,7 @@ export default function Home() {
   function renderNotesList(notes) {
     return [{}].concat(notes).map((note, i) =>
       i !== 0 && note.content ? (
-        <div>
+        <div key={note.noteId}>
           <LinkContainer key={note.noteId} to={`/${note.noteId}`}>
             <ListGroupItem header={note.noteId}>
               <InfoBox note={note}/>
@@ -71,9 +69,9 @@ export default function Home() {
 
         </div>
       ) : i !== 0 && !note.content ? (
-          <div>
+          <div key={note.noteId}>
             <div>
-              <ListGroupItem className="deleted-note" header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
+              <ListGroupItem key={note.noteId} className="deleted-note" header={note.noteId + " - (" + t("Deleted or expired") + ")"}>
                 <InfoBox note={note}/>
               </ListGroupItem>
             </div>
@@ -83,16 +81,16 @@ export default function Home() {
           </div>
         ) :
         (
-          <div>
+          <div key="xyz">
             <LinkContainer key="new" to="/new">
-              <ListGroupItem>
+              <ListGroupItem key="new">
                 <h4>
                   <b>{"\uFF0B"}</b> {t("Add new note...")}
                 </h4>
               </ListGroupItem>
             </LinkContainer>
             <LinkContainer key="new_onetime" to="/new-onetime">
-              <ListGroupItem>
+              <ListGroupItem key="new_onetime">
                 <h4>
                   <b>{"\uFF0B"}</b> {t("Add onetime-readable note...")}
                 </h4>
@@ -103,27 +101,10 @@ export default function Home() {
     );
   }
 
-  function renderLander() {
-    return (
-      <div className="lander">
-        <h1>Scratch</h1>
-        <p>A simple note taking app</p>
-        <div>
-          <Link to="/login" className="btn btn-info btn-lg">
-            Login
-          </Link>
-          <Link to="/signup" className="btn btn-success btn-lg">
-            Signup
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   function renderNotes() {
     return (
       <div className="notes">
-        <PageHeader>{t("Your encrypted notes:")}</PageHeader>
+        <PageHeader>{t("Your encrypted notes")}:</PageHeader>
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
@@ -167,7 +148,6 @@ export default function Home() {
       {renderModal()}
       {renderMyUserId()}
       {renderNotes()}
-      {/*{isAuthenticated ? renderNotes() : renderLander()}*/}
     </div>
   );
 }
