@@ -8,6 +8,7 @@ import Notes from "./containers/Notes";
 import SetUser from "./containers/SetUser";
 import QuickNote from "./containers/QuickNote";
 import QuickNoteWithPassword from "./containers/QuickNoteWithPassword";
+import Response from "./containers/Response";
 
 export default function Routes() {
   return (
@@ -29,6 +30,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/new-onetime">
         <NewNoteOnetime />
+      </Route>
+      <Route exact path="/response">
+        <Response />
       </Route>
       <Route exact path="/:id/:pass">
         <Notes />

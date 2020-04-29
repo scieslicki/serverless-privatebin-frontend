@@ -22,6 +22,7 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
+import {saveNote} from "../libs/store-note";
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -61,7 +62,8 @@ export default function NewNote({
                                   initial = 3,
                                   addPasswordToUrl = false,
                                   message,
-                                  addPassword
+                                  addPassword,
+                                  note
 }) {
   const history = useHistory();
   const { t, i18n } = useTranslation();
@@ -74,11 +76,15 @@ export default function NewNote({
     initial = 3;
   }
 
-  const [telomer, setTelomer] = useState(initial);
-  const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
-  const [type, setType] = useState(typeOptions[typeIndex].value);
-  const [content, setContent] = useState({code: message ? message : ''});
-  const [password, setPassword] = useState(addPassword ? addPassword : '');
+  const [telomer, setTelomer] = useState(note && note.telomer ? note.telomer : initial);
+  const [ttl, setTtl] = useState(note && note.ttl ? note.ttl : ttlOptions[ttlIndex].value);  //w minutach
+  // doesn't work type... change
+  const [type, setType] = useState(note && note.type ? note.type : typeOptions[typeIndex].value);
+  const [content, setContent] = useState(note && note.content ? {code: `
+
+-- response to: 
+> ` + note.content} : {code: message ? message : ''});
+  const [password, setPassword] = useState(note && note.password ? note.password : addPassword ? addPassword : '');
   const [isLoading, setIsLoading] = useState(false);
 
   let translatedTtlOptions = [];
@@ -97,6 +103,22 @@ export default function NewNote({
     return content.code.length > 0;
   }
 
+  function createCommonNote(withPassword = false) {
+    const result = {
+      userId: storedUserId,
+      type: type,
+      ttl: parseInt(ttl),
+      telomer: parseInt(telomer),
+      content: content.code,
+    };
+
+    if (withPassword) {
+      result.password = password;
+    }
+
+    return result;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -113,20 +135,19 @@ export default function NewNote({
       if (typeof addPasswordToUrl === "boolean" && addPasswordToUrl){
         autopass = addPasswordToUrl;
       }
-      
+
+      const newNote = createCommonNote();
+
       await createNote({
-        userId: storedUserId,
-        type: type,
-        ttl: parseInt(ttl),
-        telomer: parseInt(telomer),
+        ...newNote,
         content: ciphertext,
         iv,
         tag,
         compression,
         size: parseInt(msgSize),
-        autopass
-      }
-      );
+        autopass,
+      });
+
       history.push("/");
     } catch (e) {
       onError(e);
@@ -199,17 +220,6 @@ export default function NewNote({
               />
            </div>
         </FormGroup>
-
-        {/*<FormGroup>*/}
-        {/*  <InputGroup>*/}
-        {/*    <ControlLabel>{t("Expiration date")} {t("(in minutes)")}</ControlLabel>*/}
-        {/*    <FormControl controlId="ttl"*/}
-        {/*                 type="number"*/}
-        {/*                 value={ttl}*/}
-        {/*                 onChange={e => setTtl(e.target.value)}*/}
-        {/*    />*/}
-        {/*  </InputGroup>*/}
-        {/*</FormGroup>*/}
 
         <FormGroup controlId="password">
           <ControlLabel>{t("Password")}</ControlLabel>

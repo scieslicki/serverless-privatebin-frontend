@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { API, Storage } from "aws-amplify";
 import { onError } from "../libs/errorLib";
-import {FormGroup, FormControl, ControlLabel, ListGroupItem} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, ListGroupItem, Button} from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Notes.css";
@@ -26,6 +26,11 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 
 import {typeOptions} from "../data/type-options";
+import {ttlOptions} from "../data/ttl-options";
+import {saveNote as saveToStoreNote} from "../libs/store-note";
+
+const ttlIndex = 4;
+const typeIndex = 0;
 
 export default function Notes() {
   const { id, pass } = useParams();
@@ -38,12 +43,14 @@ export default function Notes() {
 
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState(pass);
-  const [content, setContent] = useState({code:""} );
+  const [content, setContent] = useState({ code:"" } );
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [show, setShow] = useState(false);
   const [passwordDisabled, setPasswordDisabled] = useState(false);
-  const [type, setType] = useState('text/html');
+  const [telomer, setTelomer] = useState(3);
+  const [ttl, setTtl] = useState(ttlOptions[ttlIndex].value);  //w minutach
+  const [type, setType] = useState(typeOptions[typeIndex].value);
   const handleClose = () => setShow(false);
 
   useEffect(() => {
@@ -57,11 +64,6 @@ export default function Notes() {
         // const { content, attachment } = note;
         const { content } = note;
 
-        // if (attachment) {
-        //   note.attachmentURL = await Storage.vault.get(attachment);
-        // }
-
-        // setContent(content);
         setContent({code:''});
         setNote(note);
         setType(note.type);
@@ -77,13 +79,28 @@ export default function Notes() {
     return content.length > 0;
   }
 
-  // function formatFilename(str) {
-  //   return str.replace(/^\w+-/, "");
-  // }
+  function createCommonNote(note, withPassword = false) {
+    const result = {
+      userId: storedUserId,
+      type: note.type,
+      ttl: parseInt(note.ttl),
+      telomer: parseInt(note.telomer),
+      content: content.code,
+    };
 
-  // function handleFileChange(event) {
-  //   file.current = event.target.files[0];
-  // }
+    if (withPassword) {
+      result.password = password;
+    }
+
+    return result;
+  }
+
+  async function gotoResponse() {
+    await saveToStoreNote(createCommonNote(note, true));
+
+    history.push("/response");
+  }
+
 
   function saveNote(note) {
     return API.put("privatebin", `/privatebin/${id}`, {
@@ -92,25 +109,11 @@ export default function Notes() {
   }
 
   async function handleSubmit(event) {
-    // let attachment;
-
     event.preventDefault();
-
-    // if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
-    //   alert(
-    //     `Please pick a file smaller than ${
-    //       config.MAX_ATTACHMENT_SIZE / 1000000
-    //     } MB.`
-    //   );
-    //   return;
-    // }
 
     setIsLoading(true);
 
     try {
-      // if (file.current) {
-      //   attachment = await s3Upload(file.current);
-      // }
       const { ciphertext, iv, tag } = encrypt(content, standarizePassword(password));
       note.content = ciphertext;
       note.iv = iv;
@@ -144,7 +147,6 @@ export default function Notes() {
     } catch (e) {
       console.log(e);
       setShow(true);
-      // alert('Wrong password');
     }
   }
 
@@ -246,21 +248,32 @@ export default function Notes() {
           <div>
             <UrlInfo note={note} url={window.location.href}/>
           </div>
-          { storedUserId == note.userId ?
-            (
-              <div>
-                <LoaderButton
-                  block
-                  type="submit"
-                  bsSize="large"
-                  bsStyle="primary"
-                  isLoading={isLoading}
-                  disabled={!validateForm()}
-                >
-                  {t("Save")}
-                </LoaderButton>
-              </div> )
-           : <div></div> }
+          <div>
+            <Button
+              block
+              bsSize="large"
+              bsStyle="success"
+              onClick={gotoResponse}
+              disabled={!passwordDisabled}
+            >
+              {t("Reply")}
+            </Button>
+          </div>
+            {/*{ storedUserId == note.userId ?*/}
+            {/*(*/}
+            {/*  <div>*/}
+            {/*    <LoaderButton*/}
+            {/*      block*/}
+            {/*      type="submit"*/}
+            {/*      bsSize="large"*/}
+            {/*      bsStyle="primary"*/}
+            {/*      isLoading={isLoading}*/}
+            {/*      disabled={!validateForm()}*/}
+            {/*    >*/}
+            {/*      {t("Save")}*/}
+           {/*     </LoaderButton>*/}
+           {/*   </div> )*/}
+           {/*: <div></div> }*/}
           <div>
             <LoaderButton
             block

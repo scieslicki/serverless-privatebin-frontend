@@ -20,8 +20,6 @@ const UTF8 = 'utf8';
 const BASE64 = 'base64';
 
 function compress(text, compression) {
-  console.log(text.length, compression);
-
   if (compression === NONE) {
     return text;
   }
@@ -56,14 +54,10 @@ function decompress(data, compression) {
  * @returns {object}
  */
 export function encrypt(text, secret, compression = INFLATE) {
-  if (text.length < 100) {
-    console.log(text.length);
-
+  if (text.length < 300) {
     compression = NONE;
   }
   let compressed = compress(text, compression);
-
-  console.log(compressed, compression);
 
   const iv = crypto.randomBytes(BLOCK_SIZE_BYTES);
   const cipher = crypto.createCipheriv(ALGORITHM, secret, iv);

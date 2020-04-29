@@ -22,12 +22,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [showRemove, setShowRemove] = useState(false);
-  const [showUserId, setShowUserId] = useState(false);
   const handleRemoveClose = () => setShowRemove(false);
   const handleRemoveShow = () => setShowRemove(true);
+
+  const [showUserId, setShowUserId] = useState(false);
   const handleUserIdClose = () => setShowUserId(false);
   const handleUserIdShow = () => setShowUserId(true);
-
 
   useEffect(() => {
     async function onLoad() {
