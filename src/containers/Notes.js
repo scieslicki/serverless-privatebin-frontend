@@ -45,7 +45,7 @@ export default function Notes() {
 
   useEffect(() => {
     function loadNote() {
-      return API.get("privatebin", `/privatebin/${id}`);
+      return API.get("privatebin", `/privatebin/notes/${id}`);
     }
 
     async function onLoad() {
@@ -86,7 +86,7 @@ export default function Notes() {
   }
 
   function saveNote(note) {
-    return API.put("privatebin", `/privatebin/${id}`, {
+    return API.put("privatebin", `/privatebin/notes/${id}`, {
       body: note
     });
   }
@@ -131,7 +131,7 @@ export default function Notes() {
   }
 
   function deleteNote() {
-    return API.del("privatebin", `/privatebin/${id}`);
+    return API.del("privatebin", `/privatebin/notes/${id}`);
   }
 
   async function handleDelete(event) {

@@ -151,7 +151,7 @@ export default function NewNote({
   }
 
   function createNote(note) {
-    return API.post("privatebin", "/privatebin", {
+    return API.post("privatebin", "/privatebin/notes", {
       body: note
     });
   }

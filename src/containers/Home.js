@@ -52,7 +52,7 @@ export default function Home() {
       }
     }
 
-    return API.get("privatebin", "/privatebin", myInit);
+    return API.get("privatebin", "/privatebin/notes", myInit);
   }
 
   function renderNotesList(notes) {
