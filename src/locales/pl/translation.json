@@ -70,5 +70,9 @@
   "json code": "kod json",
   "yaml code": "kod yaml",
 
-  "Link to my history": "Link do mojej historii"
+  "Link to my history": "Link do mojej historii",
+  "Send by email": "Wyślij emailem",
+  "You secured note": "Twoja bezpieczna notka",
+  "Hello": "Cześć",
+  "Your secured note url is": "Adres url twojej bezpiecznej notki"
 }

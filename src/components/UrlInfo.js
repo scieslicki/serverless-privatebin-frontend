@@ -4,6 +4,7 @@ import {FormControl} from "react-bootstrap";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import "./UrlInfo.css";
 import { useTranslation } from 'react-i18next';
+import Mailto from "./Mailto";
 
 export default function UrlInfo({note, url = null}) {
   if (!url) {
@@ -23,11 +24,24 @@ export default function UrlInfo({note, url = null}) {
         <QRCode value={url}/>
       </div>
 
-      <div className='url-link'>
-        <FormControl type="text" value={url} readOnly/>
-        <CopyToClipboard text={url}>
-          <button type="button">{t("Copy URL")}...</button>
-        </CopyToClipboard>
+      <div className="url-container">
+        <div className='url-link'>
+          <FormControl type="text" value={url} readOnly/>
+          <CopyToClipboard text={url}>
+            <button type="button">{t("Copy URL")}...</button>
+          </CopyToClipboard>
+        </div>
+        <div className='send-email'>
+          <Mailto
+            email=''
+            subject={t("You secured note")}
+            body={`
+  ${t('Hello')}
+      
+  ${t('Your secured note url is')}: ${url}
+  
+          `}>{t("Send by email")}...</Mailto>
+          </div>
       </div>
     </div>
   </>
