@@ -1,5 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import Login from "./containers/Login";
+import Signup from "./containers/Signup";
 import Home from "./containers/Home";
 import NotFound from "./containers/NotFound";
 import NewNote from "./containers/NewNote";
@@ -9,6 +11,9 @@ import SetUser from "./containers/SetUser";
 import QuickNote from "./containers/QuickNote";
 import QuickNoteWithPassword from "./containers/QuickNoteWithPassword";
 import Response from "./containers/Response";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import Settings from "./containers/Settings";
 
 export default function Routes() {
   return (
@@ -16,6 +21,15 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
+      <UnauthenticatedRoute exact path="/login">
+        <Login />
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/signup">
+        <Signup />
+      </UnauthenticatedRoute>
+      <AuthenticatedRoute exact path="/settings">
+        <Settings />
+      </AuthenticatedRoute>
       <Route exact path="/quick/:password/:message">
         <QuickNoteWithPassword />
       </Route>
