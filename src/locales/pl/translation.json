@@ -8,8 +8,12 @@
   "Login": "Zaloguj",
   "Email": "Email",
   "Password": "Hasło",
+  "New Password": "Nowe Hasło",
   "Confirm Password": "Potwierdź hasło",
   "Confirmation Code": "Kod potwierdzający",
+  "Send": "Wyślij",
+  "Forget Password": "Przypomnij hasło",
+
   "Please check your email for the code": "Sprawdź maila, będzie tam kod potwierdzający",
   "Verify": "Zweryfikuj",
   "Your encrypted notes": "Twoje zaszyfrowane notki",

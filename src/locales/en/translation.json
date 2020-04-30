@@ -8,8 +8,12 @@
   "Login": "Login",
   "Email": "Email",
   "Password": "Password",
+  "New Password": "New Password",
   "Confirm Password": "Confirm Password",
   "Confirmation Code": "Confirmation Code",
+  "Send": "Send",
+  "Forget Password": "Forget Password",
+
   "Please check your email for the code": "Please check your email for the code",
   "Verify": "Verify",
   "Your encrypted notes": "Your encrypted notes",

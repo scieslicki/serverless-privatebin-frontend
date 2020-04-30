@@ -10,6 +10,7 @@ import RemovingModal from "../components/RemovingModal";
 import {readUserId, createUserId} from "../libs/readUserId";
 import {useTranslation} from 'react-i18next';
 import MyUserIdModal from "../components/MyUserIdModal";
+import {useAppContext} from "../libs/contextLib";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ export default function Home() {
   let storedUserId = readUserId();
 
   const [notes, setNotes] = useState([]);
+  const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
 
   const [showRemove, setShowRemove] = useState(false);
@@ -29,6 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     async function onLoad() {
+
       try {
         const notes = await loadNotes();
         setNotes(notes);
@@ -42,7 +45,7 @@ export default function Home() {
     }
 
     onLoad();
-  }, []);
+  }, [isAuthenticated]);
 
   function loadNotes() {
     let myInit = {

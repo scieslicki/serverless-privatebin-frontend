@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
-import { useAppContext } from "../libs/contextLib";
-import { useFormFields } from "../libs/hooksLib";
-import { onError } from "../libs/errorLib";
+import {FormGroup, FormControl, ControlLabel, ListGroup, ListGroupItem, Grid, Col} from "react-bootstrap";
+import LoaderButton from "../../components/LoaderButton";
+import { useAppContext } from "../../libs/contextLib";
+import { useFormFields } from "../../libs/hooksLib";
+import { onError } from "../../libs/errorLib";
 import "./Login.css";
 import {useTranslation} from 'react-i18next';
+import {Link} from "react-router-dom";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -56,6 +57,15 @@ export default function Login() {
             onChange={handleFieldChange}
           />
         </FormGroup>
+        <Grid fluid={true}>
+          <Col sm={5}>
+            <Link to="/signup">{t("Signup")}...</Link>
+          </Col>
+          <Col sm={7}>
+            <Link to="/reset">{t("Forget Password")}...</Link>
+          </Col>
+        </Grid>
+        <br/>
         <LoaderButton
           block
           type="submit"

@@ -6,9 +6,9 @@ import Routes from "./Routes";
 import { AppContext } from "./libs/contextLib";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
-import { onError } from "./libs/errorLib";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useTranslation } from 'react-i18next';
+import Platform from "./components/Platform";
 
 function App() {
   const history = useHistory();
@@ -78,6 +78,8 @@ function App() {
           value={{ isAuthenticated, userHasAuthenticated }}
         >
           <Routes />
+
+          <Platform />
         </AppContext.Provider>
       </ErrorBoundary>
     </div>

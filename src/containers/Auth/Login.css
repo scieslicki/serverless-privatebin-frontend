@@ -1,0 +1,23 @@
+@media all and (min-width: 480px) {
+    .Login {
+        padding: 60px 0;
+    }
+
+    .Login form {
+        margin: 0 auto;
+        max-width: 320px;
+    }
+
+    .Login form .col-sm-5,
+    .Login form .col-sm-7
+    {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .Login form .login-item-link.register {
+
+    }
+    .Login form .col-sm-7 {
+        text-align: right;
+    }
+}

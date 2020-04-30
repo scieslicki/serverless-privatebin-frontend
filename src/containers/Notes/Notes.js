@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { API } from "aws-amplify";
-import { onError } from "../libs/errorLib";
+import { onError } from "../../libs/errorLib";
 import {FormGroup, FormControl, ControlLabel, ListGroupItem, Button} from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
+import LoaderButton from "../../components/LoaderButton";
 import "./Notes.css";
-import {decrypt, encrypt} from "../libs/Aes-256";
-import {standarizePassword} from "../libs/password-lib";
-import InfoBox from "../components/InfoBox";
-import UrlInfo from "../components/UrlInfo";
-import { readUserId } from "../libs/readUserId";
-import WrongPasswordModal from "../components/WrongPasswordModal";
+import {decrypt, encrypt} from "../../libs/Aes-256";
+import {standarizePassword} from "../../libs/password-lib";
+import InfoBox from "../../components/InfoBox";
+import UrlInfo from "../../components/UrlInfo";
+import { readUserId } from "../../libs/readUserId";
+import WrongPasswordModal from "../../components/WrongPasswordModal";
 import { useTranslation } from 'react-i18next';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
@@ -22,8 +22,8 @@ import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 
-import {typeOptions} from "../data/type-options";
-import {saveNote as saveToStoreNote} from "../libs/store-note";
+import {typeOptions} from "../../data/type-options";
+import {saveNote as saveToStoreNote} from "../../libs/store-note";
 
 const typeIndex = 0;
 
