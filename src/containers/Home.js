@@ -10,14 +10,15 @@ import RemovingModal from "../components/RemovingModal";
 import {readUserId, createUserId} from "../libs/readUserId";
 import {useTranslation} from 'react-i18next';
 import MyUserIdModal from "../components/MyUserIdModal";
+import {useAppContext} from "../libs/contextLib";
 
 export default function Home() {
   const { t } = useTranslation();
 
-  let storedUserId = readUserId();
-
   const [notes, setNotes] = useState([]);
+  const { isAuthenticated, storedUserId } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+
 
   const [showRemove, setShowRemove] = useState(false);
   const handleRemoveClose = () => setShowRemove(false);
@@ -26,6 +27,8 @@ export default function Home() {
   const [showUserId, setShowUserId] = useState(false);
   const handleUserIdClose = () => setShowUserId(false);
   const handleUserIdShow = () => setShowUserId(true);
+
+  console.log(useAppContext());
 
   useEffect(() => {
     async function onLoad() {
@@ -42,9 +45,9 @@ export default function Home() {
     }
 
     onLoad();
-  }, []);
+  }, [isAuthenticated, storedUserId]);
 
-  function loadNotes() {
+  async function loadNotes() {
     let myInit = {
       body: {},
       headers: {
@@ -52,7 +55,7 @@ export default function Home() {
       }
     }
 
-    return API.get("privatebin", "/privatebin", myInit);
+    return await API.get("privatebin", "/privatebin/notes", myInit);
   }
 
   function renderNotesList(notes) {
@@ -115,32 +118,32 @@ export default function Home() {
   function renderModal() {
     const handleRemoving = () => {
 
-      storedUserId = createUserId();
+      // storedUserId = createUserId();
 
       setNotes([]);
 
       handleRemoveClose();
     };
 
-    return (
+    return !isAuthenticated ? (
       <RemovingModal
         show={showRemove}
         handleShow={handleRemoveShow}
         handleClose={handleRemoveClose}
         handleRemoving={handleRemoving}
       />
-    );
+    ) : (<></>);
   }
 
   function renderMyUserId() {
-    return (
+    return !isAuthenticated ? (
       <MyUserIdModal
         show={showUserId}
         handleShow={handleUserIdShow}
         handleClose={handleUserIdClose}
-        userId={readUserId()}
+        userId={readUserId(isAuthenticated)}
       />
-    );
+    ) : (<></>);
   }
 
   return (

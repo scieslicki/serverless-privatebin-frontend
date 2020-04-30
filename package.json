@@ -21,6 +21,7 @@
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-device-detect": "^1.12.1",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.4.0",
     "react-password-mask": "^3.3.1",
