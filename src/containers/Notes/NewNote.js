@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {FormGroup, FormControl, ControlLabel} from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
+import LoaderButton from "../../components/LoaderButton";
 import PasswordMask from 'react-password-mask';
-import { onError } from "../libs/errorLib";
+import { onError } from "../../libs/errorLib";
 import "./NewNote.css";
 import { API } from "aws-amplify";
-import { encrypt } from "../libs/Aes-256";
-import {standarizePassword} from "../libs/password-lib";
+import { encrypt } from "../../libs/Aes-256";
+import {standarizePassword} from "../../libs/password-lib";
 import Select from 'react-select';
-import {ttlOptions} from "../data/ttl-options";
-import {typeOptions} from "../data/type-options";
-import { readUserId } from "../libs/readUserId";
+import {ttlOptions} from "../../data/ttl-options";
+import {typeOptions} from "../../data/type-options";
+import { readUserId } from "../../libs/readUserId";
 import { useTranslation } from 'react-i18next';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
@@ -22,6 +22,7 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
+import {useAppContext} from "../../libs/contextLib";
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -65,8 +66,7 @@ export default function NewNote({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-
-  let storedUserId = readUserId();
+  const { isAuthenticated, storedUserId } = useAppContext();
 
   if (!Number.isInteger(initial)) {
     initial = 3;
@@ -151,7 +151,7 @@ export default function NewNote({
   }
 
   function createNote(note) {
-    return API.post("privatebin", "/privatebin", {
+    return API.post("privatebin", "/privatebin/notes", {
       body: note
     });
   }

@@ -24,8 +24,54 @@ Amplify.configure({
         region: config.apiGateway.REGION
       },
     ]
-  }
+  },
+  Auth: {
+    mandatorySignIn: false,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  },
 });
+
+///////////
+
+// window.addEventListener("beforeinstallprompt", event => {
+//   // Suppress automatic prompting.
+//   event.preventDefault();
+//
+//   alert("beforeinstallprompt");
+//   console.log("beforeinstallprompt");
+//
+//   // Show the (disabled-by-default) install button. This button
+//   // resolves the installButtonClicked promise when clicked.
+//   // installButton.disabled = false;
+//
+//   // Wait for the user to click the button.
+//   // installButton.addEventListener("click", async e => {
+//   //   // The prompt() method can only be used once.
+//   //   installButton.disabled = true;
+//   //
+//   //   // Show the prompt.
+//   //   const { userChoice } = await event.prompt();
+//   //   console.info(`user choice was: ${userChoice}`);
+//   // });
+// });
+//
+// /////
+//
+// function handleInstalled(ev) {
+//   const date = new Date(ev.timeStamp / 1000);
+//   console.log(`Yay! Our app got installed at ${date.toTimeString()}.`);
+// }
+//
+// // Using the event handler IDL attribute
+// window.onappinstalled = handleInstalled;
+//
+// // Using .addEventListener()
+// window.addEventListener("appinstalled", handleInstalled);
+
+
+////////
 
 ReactDOM.render(
   <Router>
