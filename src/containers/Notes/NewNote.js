@@ -22,6 +22,7 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
+import {useAppContext} from "../../libs/contextLib";
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -65,8 +66,7 @@ export default function NewNote({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-
-  let storedUserId = readUserId();
+  const { isAuthenticated, storedUserId } = useAppContext();
 
   if (!Number.isInteger(initial)) {
     initial = 3;

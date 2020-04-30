@@ -12,13 +12,14 @@ import {Link} from "react-router-dom";
 export default function Login() {
   const { t } = useTranslation();
 
-  const { userHasAuthenticated } = useAppContext();
+  const { userHasAuthenticated, storedUserId, setStoredUserId } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: ""
   });
 
+  console.log(useAppContext());
   function validateForm() {
     return fields.email.length > 0 && fields.password.length > 0;
   }
@@ -29,8 +30,10 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      await Auth.signIn(fields.email, fields.password);
+      const user = await Auth.signIn(fields.email, fields.password);
+
       userHasAuthenticated(true);
+      setStoredUserId(user.username);
     } catch (e) {
       onError(e);
       setIsLoading(false);

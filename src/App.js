@@ -3,18 +3,20 @@ import { Link, useHistory } from "react-router-dom";
 import {Nav, Navbar, NavItem} from "react-bootstrap";
 import './App.css';
 import Routes from "./Routes";
-import { AppContext } from "./libs/contextLib";
+import {AppContext} from "./libs/contextLib";
 import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useTranslation } from 'react-i18next';
 import Platform from "./components/Platform";
+import {readUserId} from "./libs/readUserId";
 
 function App() {
   const history = useHistory();
 
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [storedUserId, setStoredUserId] = useState(readUserId);
 
   const { t } = useTranslation();
 
@@ -24,7 +26,9 @@ function App() {
 
   async function onLoad() {
     try {
-      await Auth.currentSession();
+      const session = await Auth.currentSession();
+
+      setStoredUserId(session.getAccessToken().decodePayload().username);
       userHasAuthenticated(true);
     } catch (e) {
       if (e !== 'No current user') {
@@ -62,9 +66,6 @@ function App() {
               <NavItem onClick={handleLogout}>{t("Logout")}</NavItem>
             ) : (
               <>
-                <LinkContainer to="/signup">
-                  <NavItem>{t("Signup")}</NavItem>
-                </LinkContainer>
                 <LinkContainer to="/login">
                   <NavItem>{t("Login")}</NavItem>
                 </LinkContainer>
@@ -75,7 +76,7 @@ function App() {
       </Navbar>
       <ErrorBoundary>
         <AppContext.Provider
-          value={{ isAuthenticated, userHasAuthenticated }}
+          value={{ isAuthenticated, userHasAuthenticated, storedUserId, setStoredUserId }}
         >
           <Routes />
 
@@ -90,8 +91,9 @@ function App() {
     await Auth.signOut();
 
     userHasAuthenticated(false);
+    setStoredUserId(readUserId);
 
-    history.push("/login");
+    history.push("/");
   }
 }
 

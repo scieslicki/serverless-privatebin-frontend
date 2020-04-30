@@ -1,7 +1,17 @@
 import * as uuid from "uuid";
+// import { Auth } from "aws-amplify";
 
-export function readUserId () {
+export function readUserId (isAuthenticated = false) {
   let storedUserId;
+
+  // if (isAuthenticated) {
+  //   // const userInfo = await Auth.currentUserInfo();
+  //   const userInfo = await Auth.currentAuthenticatedUser();
+  //
+  //   console.log(userInfo.username);
+  //
+  //   return userInfo.username;
+  // }
 
   if (localStorage.getItem('userId')) {
     storedUserId = localStorage.getItem('userId');

@@ -15,11 +15,10 @@ import {useAppContext} from "../libs/contextLib";
 export default function Home() {
   const { t } = useTranslation();
 
-  let storedUserId = readUserId();
-
   const [notes, setNotes] = useState([]);
-  const { isAuthenticated } = useAppContext();
+  const { isAuthenticated, storedUserId } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
+
 
   const [showRemove, setShowRemove] = useState(false);
   const handleRemoveClose = () => setShowRemove(false);
@@ -29,9 +28,10 @@ export default function Home() {
   const handleUserIdClose = () => setShowUserId(false);
   const handleUserIdShow = () => setShowUserId(true);
 
+  console.log(useAppContext());
+
   useEffect(() => {
     async function onLoad() {
-
       try {
         const notes = await loadNotes();
         setNotes(notes);
@@ -45,9 +45,9 @@ export default function Home() {
     }
 
     onLoad();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, storedUserId]);
 
-  function loadNotes() {
+  async function loadNotes() {
     let myInit = {
       body: {},
       headers: {
@@ -55,7 +55,7 @@ export default function Home() {
       }
     }
 
-    return API.get("privatebin", "/privatebin/notes", myInit);
+    return await API.get("privatebin", "/privatebin/notes", myInit);
   }
 
   function renderNotesList(notes) {
@@ -118,32 +118,32 @@ export default function Home() {
   function renderModal() {
     const handleRemoving = () => {
 
-      storedUserId = createUserId();
+      // storedUserId = createUserId();
 
       setNotes([]);
 
       handleRemoveClose();
     };
 
-    return (
+    return !isAuthenticated ? (
       <RemovingModal
         show={showRemove}
         handleShow={handleRemoveShow}
         handleClose={handleRemoveClose}
         handleRemoving={handleRemoving}
       />
-    );
+    ) : (<></>);
   }
 
   function renderMyUserId() {
-    return (
+    return !isAuthenticated ? (
       <MyUserIdModal
         show={showUserId}
         handleShow={handleUserIdShow}
         handleClose={handleUserIdClose}
-        userId={readUserId()}
+        userId={readUserId(isAuthenticated)}
       />
-    );
+    ) : (<></>);
   }
 
   return (

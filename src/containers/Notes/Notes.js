@@ -24,6 +24,7 @@ import 'prismjs/components/prism-yaml';
 
 import {typeOptions} from "../../data/type-options";
 import {saveNote as saveToStoreNote} from "../../libs/store-note";
+import {useAppContext} from "../../libs/contextLib";
 
 const typeIndex = 0;
 
@@ -31,8 +32,7 @@ export default function Notes() {
   const { id, pass } = useParams();
   const history = useHistory();
   const { t } = useTranslation();
-
-  let storedUserId = readUserId();
+  const { isAuthenticated, storedUserId } = useAppContext();
 
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState(pass);
