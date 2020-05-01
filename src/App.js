@@ -8,7 +8,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { useTranslation } from 'react-i18next';
-import Platform from "./components/Platform";
 import {readUserId} from "./libs/readUserId";
 
 function App() {
@@ -79,8 +78,6 @@ function App() {
           value={{ isAuthenticated, userHasAuthenticated, storedUserId, setStoredUserId }}
         >
           <Routes />
-
-          <Platform />
         </AppContext.Provider>
       </ErrorBoundary>
     </div>

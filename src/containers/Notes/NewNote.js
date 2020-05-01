@@ -23,6 +23,7 @@ import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 import {useAppContext} from "../../libs/contextLib";
+import {SketchField, Tools} from 'react-sketch';
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -62,7 +63,8 @@ export default function NewNote({
                                   addPasswordToUrl = false,
                                   message,
                                   addPassword,
-                                  note
+                                  note,
+                                  img = false
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -72,15 +74,28 @@ export default function NewNote({
     initial = 3;
   }
 
+  let initialType;
+  if (note) {
+    initialType = note.type;
+  } else
+  if (img) {
+    initialType = 'image/svg+xml';
+  } else {
+    initialType = ttlOptions[ttlIndex].value;
+  }
+
   const [telomer, setTelomer] = useState(note && note.telomer ? note.telomer : initial);
   const [ttl, setTtl] = useState(note && note.ttl ? note.ttl : ttlOptions[ttlIndex].value);  //w minutach
-  const [type, setType] = useState(note && note.type ? note.type : typeOptions[typeIndex].value);
+  const [type, setType] = useState(initialType);
+  const [drawings, setDrawings] = useState([]);
   const [content, setContent] = useState(note && note.content ? {code: `
 
 -- response to: 
 > ` + note.content} : {code: message ? message : ''});
   const [password, setPassword] = useState(note && note.password ? note.password : addPassword ? addPassword : '');
   const [isLoading, setIsLoading] = useState(false);
+
+  let sketch;
 
   let translatedTtlOptions = [];
 
@@ -119,11 +134,21 @@ export default function NewNote({
 
     setIsLoading(true);
 
-    const msgSize = content.code.length;
+    console.log(content.code);
+
+    let contentToSave;
+
+    if(img) {
+      contentToSave = JSON.stringify(sketch.toJSON());
+    } else {
+      contentToSave = content.code;
+    };
+
+    const msgSize = contentToSave.length;
     const secret = await standarizePassword(storedUserId, password);
 
     try {
-      const { ciphertext, iv, tag, compression } = encrypt(content.code, secret);
+      const { ciphertext, iv, tag, compression } = encrypt(contentToSave, secret);
 
       let autopass = false;
 
@@ -148,6 +173,10 @@ export default function NewNote({
       onError(e);
       setIsLoading(false);
     }
+  }
+
+  function handleSaveImg(event) {
+    handleSubmit(event);
   }
 
   function createNote(note) {
@@ -182,17 +211,17 @@ export default function NewNote({
                          onChange={e => setTelomer(e.target.value)}
             />
           </div>
-
-          <div className="col-sm-6 col-lg-6 col-sm-12">
-            <ControlLabel>{t("Message Type")}</ControlLabel>
-            <Select
-              controlId="type"
-              options={translatedTypeOptions}
-              defaultValue={translatedTypeOptions[typeIndex]}
-              onChange={e => setType(e.value)}
-            />
-
-          </div>
+            <div className="col-sm-6 col-lg-6 col-sm-12">
+              <ControlLabel>{t("Message Type")}</ControlLabel>
+              {!img ? (
+                <Select
+                  controlId="type"
+                  options={translatedTypeOptions}
+                  defaultValue={translatedTypeOptions[typeIndex]}
+                  onChange={e => setType(e.value)}
+                />
+              ): (<FormControl type='text' readOnly={true} value={type} />) }
+            </div>
         </FormGroup>
 
         <FormGroup controlId="ttl">
@@ -229,8 +258,8 @@ export default function NewNote({
                         useVendorStyles="false"
           />
         </FormGroup>
-
         <FormGroup controlId="content">
+        {!img ? (
           <Editor
             value={content.code}
             onValueChange={code => setContent({ code })}
@@ -241,8 +270,17 @@ export default function NewNote({
             }}
           className="container__editor"
         />
+        ) : (<SketchField width='100%'
+                          height='50vw'
+                          ref={c => (sketch = c)}
+                          tool={Tools.Pencil}
+                          lineColor='black'
+                          lineWidth={3}
+                          // onValueChange={code => setContent({ code })}
+        />)}
         </FormGroup>
 
+        { !img ? (
         <LoaderButton
           block
           type="submit"
@@ -253,6 +291,17 @@ export default function NewNote({
         >
           {t("Create")}
         </LoaderButton>
+        ) : (
+          <LoaderButton
+            block
+            bsSize="large"
+            bsStyle="primary"
+            isLoading={isLoading}
+            onClick={handleSaveImg}
+          >
+            {t("Create")} - img
+          </LoaderButton>
+        )}
       </form>
     </div>
   );

@@ -19,6 +19,7 @@ import Response from "./containers/Notes/Response";
 
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
+import NewDrawNote from "./containers/Notes/NewDrawNote";
 
 export default function Routes() {
   return (
@@ -49,6 +50,9 @@ export default function Routes() {
       </Route>
       <Route exact path="/new">
         <NewNote />
+      </Route>
+      <Route exact path="/new-draw">
+        <NewDrawNote />
       </Route>
       <Route exact path="/new-onetime">
         <NewNoteOnetime />

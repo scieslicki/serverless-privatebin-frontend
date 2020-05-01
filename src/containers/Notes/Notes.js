@@ -25,6 +25,7 @@ import 'prismjs/components/prism-yaml';
 import {typeOptions} from "../../data/type-options";
 import {saveNote as saveToStoreNote} from "../../libs/store-note";
 import {useAppContext} from "../../libs/contextLib";
+import {SketchField, Tools} from "react-sketch";
 
 const typeIndex = 0;
 
@@ -36,12 +37,16 @@ export default function Notes() {
 
   const [note, setNote] = useState(null);
   const [password, setPassword] = useState(pass);
-  const [content, setContent] = useState({ code:"" } );
+  const [content, setContent] = useState({ code: ""} );
   const [isDeleting, setIsDeleting] = useState(false);
   const [show, setShow] = useState(false);
   const [passwordDisabled, setPasswordDisabled] = useState(false);
   const [type, setType] = useState(typeOptions[typeIndex].value);
   const handleClose = () => setShow(false);
+  const [img, setImg] = useState(false);
+  // const [sketch, setSketch] = useState([]);
+
+  let sketch = [];
 
   useEffect(() => {
     function loadNote() {
@@ -55,6 +60,10 @@ export default function Notes() {
         setContent({code:''});
         setNote(note);
         setType(note.type);
+
+        if (note.type === 'image/svg+xml') {
+          setImg(true);
+        }
       } catch (e) {
         onError(e);
       }
@@ -110,10 +119,10 @@ export default function Notes() {
   async function handleDecrypt(event) {
     event.preventDefault();
 
-    let content;
+    let decryptedContent;
 
     try {
-      content = decrypt(
+      decryptedContent = decrypt(
         note.content,
         note.iv,
         note.tag,
@@ -121,7 +130,7 @@ export default function Notes() {
         note.compression
       );
 
-      setContent({code: content});
+      setContent({code: decryptedContent});
 
       setPasswordDisabled(true);
     } catch (e) {
@@ -206,6 +215,7 @@ export default function Notes() {
             </LoaderButton>
           </FormGroup>
           <FormGroup controlId="content">
+            {!img ? (
             <Editor
               value={content.code}
               onValueChange={code => setContent({ code })}
@@ -215,7 +225,16 @@ export default function Notes() {
                 fontFamily: '"Fira code", "Fira Mono", monospace',
               }}
               className="container__editor"
-            />
+            /> ) : (
+                <SketchField width='100%'
+                             height='50vw'
+                             ref={c => (sketch = c)}
+                             tool={Tools.Pencil}
+                             lineColor='black'
+                             lineWidth={3}
+                             value={content.code}
+                />
+              ) }
           </FormGroup>
           <div>
             <UrlInfo note={note} url={window.location.href}/>

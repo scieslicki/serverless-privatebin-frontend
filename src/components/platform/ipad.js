@@ -4,7 +4,7 @@ import {isIpad} from "./utils";
 
 // import { useTranslation } from 'react-i18next';
 
-export default function IpadPlatform() {
+export default function IpadPlatform({ children, ...rest }) {
   // const {t} = useTranslation();
 
   if (!isIpad()) {
@@ -12,7 +12,8 @@ export default function IpadPlatform() {
   }
 
   return (
-    <div>
+    <div {...rest}>
+      {children}
       iPad
     </div>
   );

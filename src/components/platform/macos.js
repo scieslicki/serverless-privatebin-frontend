@@ -4,7 +4,7 @@ import {isDesktop, isMacOS} from "./utils";
 
 // import { useTranslation } from 'react-i18next';
 
-export default function MacOsPlatform() {
+export default function MacOsPlatform({ children, ...rest }) {
   // const {t} = useTranslation();
 
   if (!isDesktop()) {
@@ -16,7 +16,8 @@ export default function MacOsPlatform() {
   }
 
   return (
-    <div>
+    <div {...rest}>
+      {children}
       MacOS
     </div>
   );

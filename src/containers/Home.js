@@ -11,6 +11,8 @@ import {readUserId, createUserId} from "../libs/readUserId";
 import {useTranslation} from 'react-i18next';
 import MyUserIdModal from "../components/MyUserIdModal";
 import {useAppContext} from "../libs/contextLib";
+import MacOsPlatform from "../components/platform/macos";
+import PlatformDepend from "../components/PlatformDepend";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -88,17 +90,33 @@ export default function Home() {
             <LinkContainer key="new" to="/new">
               <ListGroupItem key="new">
                 <h4>
-                  <b>{"\uFF0B"}</b> {t("Add new note...")}
+                  <b>{"\uFF0B"}</b> {t("Add new note")}...
                 </h4>
               </ListGroupItem>
             </LinkContainer>
             <LinkContainer key="new_onetime" to="/new-onetime">
               <ListGroupItem key="new_onetime">
                 <h4>
-                  <b>{"\uFF0B"}</b> {t("Add onetime-readable note...")}
+                  <b>{"\uFF0B"}</b> {t("Add onetime-readable note")}...
                 </h4>
               </ListGroupItem>
             </LinkContainer>
+            <PlatformDepend ios={true}
+                            ios13={true}
+                            ipad={true}
+                            ipad13={true}
+                            iphone={true}
+                            iphone13={true}
+                            macos={true}
+                            >
+              <LinkContainer key="drawed_note" to="/new-draw">
+                <ListGroupItem key="drawed_note">
+                  <h4>
+                    <b>{"\uFF0B"}</b> {t("Add draw note")}...
+                  </h4>
+                </ListGroupItem>
+              </LinkContainer>
+            </PlatformDepend>
           </div>
         )
     );
@@ -111,6 +129,23 @@ export default function Home() {
         <ListGroup>
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
+
+        <PlatformDepend
+          debug={true}
+          android={true}
+          desktop={true}
+          ios={true}
+          ios13={true}
+          ipad={true}
+          ipad13={true}
+          iphone={true}
+          iphone13={true}
+          macos={true}
+          mobile={true}
+          pc={true}
+          tablet={true}>
+
+        </PlatformDepend>
       </div>
     );
   }
