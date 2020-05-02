@@ -7,12 +7,12 @@ import {LinkContainer} from "react-router-bootstrap";
 import InfoBox from "../components/InfoBox";
 import UrlInfo from "../components/UrlInfo";
 import RemovingModal from "../components/RemovingModal";
-import {readUserId, createUserId} from "../libs/readUserId";
+import {readUserId} from "../libs/readUserId";
 import {useTranslation} from 'react-i18next';
 import MyUserIdModal from "../components/MyUserIdModal";
 import {useAppContext} from "../libs/contextLib";
-import MacOsPlatform from "../components/platform/macos";
-import PlatformDepend from "../components/PlatformDepend";
+import StartupInstructions from "../components/StartupInstructions";
+// import { IOSView } from "react-device-detect";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -20,7 +20,6 @@ export default function Home() {
   const [notes, setNotes] = useState([]);
   const { isAuthenticated, storedUserId } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
-
 
   const [showRemove, setShowRemove] = useState(false);
   const handleRemoveClose = () => setShowRemove(false);
@@ -101,14 +100,6 @@ export default function Home() {
                 </h4>
               </ListGroupItem>
             </LinkContainer>
-            <PlatformDepend ios={true}
-                            ios13={true}
-                            ipad={true}
-                            ipad13={true}
-                            iphone={true}
-                            iphone13={true}
-                            macos={true}
-                            >
               <LinkContainer key="drawed_note" to="/new-draw">
                 <ListGroupItem key="drawed_note">
                   <h4>
@@ -116,7 +107,6 @@ export default function Home() {
                   </h4>
                 </ListGroupItem>
               </LinkContainer>
-            </PlatformDepend>
           </div>
         )
     );
@@ -130,22 +120,22 @@ export default function Home() {
           {!isLoading && renderNotesList(notes)}
         </ListGroup>
 
-        <PlatformDepend
-          debug={true}
-          android={true}
-          desktop={true}
-          ios={true}
-          ios13={true}
-          ipad={true}
-          ipad13={true}
-          iphone={true}
-          iphone13={true}
-          macos={true}
-          mobile={true}
-          pc={true}
-          tablet={true}>
+        {/*<PlatformDepend*/}
+        {/*  debug={true}*/}
+        {/*  android={true}*/}
+        {/*  desktop={true}*/}
+        {/*  ios={true}*/}
+        {/*  ios13={true}*/}
+        {/*  ipad={true}*/}
+        {/*  ipad13={true}*/}
+        {/*  iphone={true}*/}
+        {/*  iphone13={true}*/}
+        {/*  macos={true}*/}
+        {/*  mobile={true}*/}
+        {/*  pc={true}*/}
+        {/*  tablet={true}>*/}
 
-        </PlatformDepend>
+        {/*</PlatformDepend>*/}
       </div>
     );
   }
@@ -186,6 +176,7 @@ export default function Home() {
       {renderModal()}
       {renderMyUserId()}
       {renderNotes()}
+      <StartupInstructions />
     </div>
   );
 }

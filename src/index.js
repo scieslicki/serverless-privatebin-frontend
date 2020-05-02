@@ -85,10 +85,12 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();
-// serviceWorker.register();
-serviceWorker.register(
-  '/service-worker.js', {
-    updateViaCache: 'none',
-    // Optionally, set 'scope' here, if needed.
-  }
-);
+serviceWorker.register();
+
+//doesn't work :(
+// serviceWorker.register(
+//   '/service-worker.js', {
+//     updateViaCache: 'none',
+//     // Optionally, set 'scope' here, if needed.
+//   }
+// );

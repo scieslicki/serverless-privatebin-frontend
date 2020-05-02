@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import {FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, ButtonToolbar, ButtonGroup, Button} from "react-bootstrap";
 import LoaderButton from "../../components/LoaderButton";
 import PasswordMask from 'react-password-mask';
 import { onError } from "../../libs/errorLib";
@@ -11,7 +11,6 @@ import {standarizePassword} from "../../libs/password-lib";
 import Select from 'react-select';
 import {ttlOptions} from "../../data/ttl-options";
 import {typeOptions} from "../../data/type-options";
-import { readUserId } from "../../libs/readUserId";
 import { useTranslation } from 'react-i18next';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
@@ -24,6 +23,7 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 import {useAppContext} from "../../libs/contextLib";
 import {SketchField, Tools} from 'react-sketch';
+// import { DrawingBoard } from 'react-drawing-board';
 // import prettier from "prettier/standalone";
 // import parserHtml from "prettier/parser-html";
 
@@ -56,7 +56,7 @@ import {SketchField, Tools} from 'react-sketch';
 
 
 const ttlIndex = 4;
-const typeIndex = 0;
+const noteTypeIndex = 0;
 
 export default function NewNote({
                                   initial = 3,
@@ -74,20 +74,27 @@ export default function NewNote({
     initial = 3;
   }
 
-  let initialType;
+  let initialNoteType;
+
+  initialNoteType = ttlOptions[ttlIndex].value;
+
   if (note) {
-    initialType = note.type;
-  } else
-  if (img) {
-    initialType = 'image/svg+xml';
-  } else {
-    initialType = ttlOptions[ttlIndex].value;
+    if (note.type) {
+      initialNoteType = note.type;
+    }
   }
+  if (img) {
+    initialNoteType = 'image/svg+xml';
+  }
+
+  console.log(initialNoteType);
 
   const [telomer, setTelomer] = useState(note && note.telomer ? note.telomer : initial);
   const [ttl, setTtl] = useState(note && note.ttl ? note.ttl : ttlOptions[ttlIndex].value);  //w minutach
-  const [type, setType] = useState(initialType);
+  const [noteType, setNoteType] = useState(initialNoteType);
   const [drawings, setDrawings] = useState([]);
+  const [tool, setTool] = useState(Tools.Pencil);
+  const [lineWidth, setLineWidth] = useState(3);
   const [content, setContent] = useState(note && note.content ? {code: `
 
 -- response to: 
@@ -116,7 +123,7 @@ export default function NewNote({
   function createCommonNote(withPassword = false) {
     const result = {
       userId: storedUserId,
-      type: type,
+      type: noteType,
       ttl: parseInt(ttl),
       telomer: parseInt(telomer),
       content: content.code,
@@ -186,9 +193,15 @@ export default function NewNote({
   }
 
   function highlightByType(code) {
-    const splitted = type.split('/');
+    console.log(noteType);
+
+    let shortType = 'plain';
+
+    if (typeof noteType === 'string') {
+      const splitted = noteType.split('/');
 
     let shortType = splitted[1];
+    }
 
     if (shortType === 'plain') {
       shortType = 'html';
@@ -217,10 +230,10 @@ export default function NewNote({
                 <Select
                   controlId="type"
                   options={translatedTypeOptions}
-                  defaultValue={translatedTypeOptions[typeIndex]}
-                  onChange={e => setType(e.value)}
+                  defaultValue={translatedTypeOptions[noteTypeIndex]}
+                  onChange={e => setNoteType(e.value)}
                 />
-              ): (<FormControl type='text' readOnly={true} value={type} />) }
+              ): (<FormControl type='text' readOnly={true} value={noteType} />) }
             </div>
         </FormGroup>
 
@@ -270,14 +283,38 @@ export default function NewNote({
             }}
           className="container__editor"
         />
-        ) : (<SketchField width='100%'
-                          height='50vw'
-                          ref={c => (sketch = c)}
-                          tool={Tools.Pencil}
-                          lineColor='black'
-                          lineWidth={3}
-                          // onValueChange={code => setContent({ code })}
-        />)}
+        ) : (<>
+          {/*<DrawingBoard />*/}
+
+          {/*<ButtonToolbar aria-label="Toolbar with button groups">*/}
+          {/*  <ButtonGroup className="mr-2" aria-label="First group" toggle={true}>*/}
+          {/*    <Button onClick={() => setTool(Tools.Pencil)}>pencil</Button>*/}
+          {/*    <Button onClick={() => setTool( Tools.Line)}>Line</Button>*/}
+          {/*    <Button onClick={() => setTool(Tools.Rectangle)}>Rectangle</Button>*/}
+          {/*    <Button onClick={() => setTool(Tools.Circle)}>Circle</Button>*/}
+          {/*    <Button onClick={() => setTool(Tools.Select)}>Select</Button>*/}
+          {/*    <Button onClick={() => setTool(Tools.Pan)}>Pan</Button>*/}
+          {/*  </ButtonGroup>*/}
+          {/*  <ButtonGroup className="mr-2" aria-label="Second group">*/}
+          {/*    <Button onClick={() => setLineWidth(1)}>1</Button>*/}
+          {/*    <Button onClick={() => setLineWidth(2)}>2</Button>*/}
+          {/*    <Button onClick={() => setLineWidth(3)}>3</Button>*/}
+          {/*    <Button onClick={() => setLineWidth(4)}>4</Button>*/}
+          {/*    <Button onClick={() => setLineWidth(5)}>5</Button>*/}
+          {/*  </ButtonGroup>*/}
+          {/*  <ButtonGroup aria-label="Third group">*/}
+          {/*    <Button>8</Button>*/}
+          {/*  </ButtonGroup>*/}
+          {/*</ButtonToolbar>*/}
+
+            <SketchField width='100%'
+                            height='50vw'
+                            ref={c => (sketch = c)}
+                            tool={tool}
+                            lineColor='black'
+                            lineWidth={lineWidth}
+          />
+        </>)}
         </FormGroup>
 
         { !img ? (

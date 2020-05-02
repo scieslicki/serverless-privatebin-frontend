@@ -8,25 +8,13 @@
 }
 
 .btn-password {
-    /*position: absolute;*/
-    /*top: 50%;*/
-    /*right: 6px;*/
     margin-top: -15px !important;
-    /*padding: 4px 10px;*/
-    /*background: rgb(226, 226, 226);*/
-    /*color: rgb(0, 0, 0);*/
 }
 
-/**/
-
-/* App */
-/*.container {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    height: 100%;*/
-/*    width: 100%;*/
-/*}*/
+.canvas-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 .container__content {
     width: 440px;
@@ -39,17 +27,13 @@
 .container_editor_area {
     tab-size: 4ch;
     min-height: 300px;
-    /*max-height: 400px;*/
     overflow: auto;
     margin: 1.67em 0;
-    /*border: solid 1px #fafafa;*/
 }
 
 .container__editor {
-    /*font-size: 12px;*/
     font-size: inherit;
     font-variant-ligatures: common-ligatures;
-    /*background-color: #fafafa;*/
     border: solid 1px #ccc;
     border-radius: 4px;
     min-height: 300px;

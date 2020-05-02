@@ -1,0 +1,35 @@
+.ipad-instruction-carousel {
+  height: 500px;
+  overflow: hidden;
+}
+
+.ipad-instruction-carousel .carousel-inner .item {
+  height: 500px;
+  overflow: hidden;
+}
+
+.iphone-instruction .modal-content{
+  width: 300px;
+  max-width: 350px;
+}
+
+.iphone-instruction-carousel {
+  height: 430px;
+  overflow: hidden;
+}
+
+.iphone-instruction-carousel .carousel-inner {
+  height: 430px;
+  /*width: 300px;*/
+  overflow: hidden;
+}
+
+.iphone-instruction-carousel .carousel-inner .item {
+  height: 430px;
+  /*width: 300px;*/
+  overflow: hidden;
+}
+
+.iphone-instruction-carousel .carousel-inner .item img {
+  /*width: 300px;*/
+}

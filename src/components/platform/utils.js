@@ -8,7 +8,8 @@ import {
   isIPad13,
   isSmartTV,
   isWearable,
-  osName
+  osName,
+  browserVersion
 } from "react-device-detect";
 
 export function isDesktop() {
@@ -36,9 +37,10 @@ export function isIpad13() {
 export function isIphone() {
   return isMobile
     && !isTablet
-    && isIOS
-    && !isIOS13
-    && isIPhone13;
+    && isIOS13
+    && isIPhone13
+    && isMacOS()
+    && parseInt(browserVersion) <= 12;
 }
 
 export function isIphone13() {
@@ -46,7 +48,8 @@ export function isIphone13() {
     && !isTablet
     && isIOS13
     && isIPhone13
-    && !isIPad13;
+    && !isIPad13
+    && parseInt(browserVersion) >= 13;
 }
 
 export function isMacOS() {

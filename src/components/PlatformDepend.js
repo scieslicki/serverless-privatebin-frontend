@@ -46,10 +46,12 @@ import {
   isIpad,
   isIpad13
 } from "./platform/utils";
+import {FormControl} from "react-bootstrap";
 
 export default function PlatformDepend({
                                          children,
                                          debug = false,
+                                         fulldebug = false,
                                          android = false,
                                          desktop = false,
                                          ios = false,
@@ -66,6 +68,53 @@ export default function PlatformDepend({
 
   let showing = false;
   let info = [];
+  let device;
+
+  if (fulldebug) {
+    device = {
+      isBrowser,
+      isMobile,
+      isTablet,
+      isSmartTV,
+      isConsole,
+      isWearable,
+      isMobileSafari,
+      isChromium,
+      isMobileOnly,
+      isAndroid,
+      isWinPhone,
+      isIOS,
+      isChrome,
+      isFirefox,
+      isSafari,
+      isOpera,
+      isIE,
+      isEdge,
+      isYandex,
+      isIOS13,
+      isIPad13,
+      isIPhone13,
+      isIPod13,
+      isElectron,
+      osVersion,
+      osName,
+      fullBrowserVersion,
+      browserVersion,
+      browserName,
+      mobileVendor,
+      mobileModel,
+      engineName,
+      engineVersion,
+      getUA,
+      deviceType,
+      isDesktop: isDesktop(),
+      isIphone13: isIphone13(),
+      isIphone: isIphone(),
+      isMacOS: isMacOS(),
+      isIpad: isIpad(),
+      isIpad13: isIpad13()
+    };
+  }
 
   if (isAndroid && android) {
     showing = true;
@@ -133,6 +182,12 @@ export default function PlatformDepend({
       <div {...rest}>
         {children}
         {info.join(', ')}
+
+        {fulldebug ? (
+          <textarea>
+            {JSON.stringify(device)}
+          </textarea>
+        ) : (<></>)}
       </div>
     );
   }
