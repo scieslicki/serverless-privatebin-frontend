@@ -76,7 +76,7 @@ export default function NewNote({
 
   let initialNoteType;
 
-  initialNoteType = ttlOptions[ttlIndex].value;
+  initialNoteType = typeOptions[noteTypeIndex].value;
 
   if (note) {
     if (note.type) {
