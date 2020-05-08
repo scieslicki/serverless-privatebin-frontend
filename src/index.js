@@ -85,7 +85,17 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();
-serviceWorker.register();
+
+serviceWorker.register().then(function(registration) {
+  // registration worked
+  console.log('Registration succeeded.');
+  // button.onclick = function() {
+    registration.update();
+  // }
+}).catch(function(error) {
+  // registration failed
+  console.log('Registration failed with ' + error);
+});
 
 //doesn't work :(
 // serviceWorker.register(
