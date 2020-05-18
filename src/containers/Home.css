@@ -34,3 +34,32 @@
 .deleted-note {
     background-color: #f7f7f7;
 }
+
+.img-button {
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+    position: relative;
+}
+
+.img-button:hover {
+    background-color: #f5f5f5;
+}
+
+.img-button img {
+    width: 256px;
+}
+
+.img-button .add {
+    position: relative;
+    top: 84px;
+    left: -150px;
+    width: 20px;
+    font-size: 3em;
+    color: #555555;
+    margin-left: -40px;
+}
+
+.img-button img svg {
+    width: 100%;
+}

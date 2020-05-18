@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {PageHeader, ListGroup, ListGroupItem } from "react-bootstrap";
+import {PageHeader, ListGroup, ListGroupItem, Image} from "react-bootstrap";
 import {onError} from "../libs/errorLib";
 import "./Home.css";
 import {API} from "aws-amplify";
@@ -87,25 +87,46 @@ export default function Home() {
         (
           <div key="xyz">
             <LinkContainer key="new" to="/new">
-              <ListGroupItem key="new">
-                <h4>
-                  <b>{"\uFF0B"}</b> {t("Add new note")}...
-                </h4>
-              </ListGroupItem>
+              <div className="img-button">
+                <Image src="/img/icons/note.png" rounded title={t("Add new note")+"..."}/>
+                <span className="add">
+                  <i className="far fa-plus-square"></i>
+                </span>
+              </div>
+
+                {/*<ListGroupItem key="new">*/}
+                {/*  <h4>*/}
+                {/*    <b>{"\uFF0B"}</b> {t("Add new note")}...*/}
+                {/*  </h4>*/}
+                {/*</ListGroupItem>*/}
             </LinkContainer>
             <LinkContainer key="new_onetime" to="/new-onetime">
-              <ListGroupItem key="new_onetime">
-                <h4>
-                  <b>{"\uFF0B"}</b> {t("Add onetime-readable note")}...
-                </h4>
-              </ListGroupItem>
+              <div className="img-button">
+                <Image src="/img/icons/1-note.png" rounded title={t("Add onetime-readable note")+"..."}/>
+                <span className="add">
+                  <i className="far fa-plus-square"></i>
+                </span>
+              </div>
+
+              {/*<ListGroupItem key="new_onetime">*/}
+              {/*  <h4>*/}
+              {/*    <b>{"\uFF0B"}</b> {t("Add onetime-readable note")}...*/}
+              {/*  </h4>*/}
+              {/*</ListGroupItem>*/}
             </LinkContainer>
-              <LinkContainer key="drawed_note" to="/new-draw">
-                <ListGroupItem key="drawed_note">
-                  <h4>
-                    <b>{"\uFF0B"}</b> {t("Add draw note")}...
-                  </h4>
-                </ListGroupItem>
+
+            <LinkContainer key="drawed_note" to="/new-draw">
+              <div className="img-button">
+                <Image src="/img/icons/note-draw.png" rounded title={t("Add draw note")+"..."}/>
+                <span className="add">
+                  <i className="far fa-plus-square"></i>
+                </span>
+              </div>
+                {/*<ListGroupItem key="drawed_note">*/}
+                {/*  <h4>*/}
+                {/*    <b>{"\uFF0B"}</b> {t("Add draw note")}...*/}
+                {/*  </h4>*/}
+                {/*</ListGroupItem>*/}
               </LinkContainer>
           </div>
         )

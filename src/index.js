@@ -86,16 +86,17 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();
 
-serviceWorker.register().then(function(registration) {
-  // registration worked
-  console.log('Registration succeeded.');
-  // button.onclick = function() {
-    registration.update();
-  // }
-}).catch(function(error) {
-  // registration failed
-  console.log('Registration failed with ' + error);
-});
+serviceWorker.register();
+// .then(function(registration) {
+//   // registration worked
+//   console.log('Registration succeeded.');
+//   // button.onclick = function() {
+//     registration.update();
+//   // }
+// }).catch(function(error) {
+//   // registration failed
+//   console.log('Registration failed with ' + error);
+// });
 
 //doesn't work :(
 // serviceWorker.register(
